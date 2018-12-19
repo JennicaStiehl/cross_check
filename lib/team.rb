@@ -1,6 +1,6 @@
 class Team
 
-  attr_accessor :teamid,
+  attr_accessor :team_id,
                 :franchiseId,
                 :shortName,
                 :teamName,

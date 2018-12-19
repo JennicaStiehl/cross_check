@@ -2,22 +2,26 @@ require "csv"
 require 'pry'
 require './lib/team'
 require './lib/game'
+require './lib/team_storage'
 
 class StatTracker
   attr_reader :teams,
               :games,
               :game_teams
+              # :data
 
   def initialize
-    @teams = []
-    @games = {}
-    @game_teams = {}
+    # @data = {}
+    # @games = {}
+    # @game_teams = {}
   end
 
   def parse_teams(file_path)
+    team_storage = TeamStorage.new
   # skip_first_line = true
   CSV.foreach(file_path, {headers: true, header_converters: :downcase, header_converters: :symbol}) do |team_info|
-    @teams << Team.new(team_info)
+    team_storage.add_team(Team.new({:team_id => team_info[0].to_i, :franchiseid => team_info[1], :shortname => (team_info[2]),
+          :teamname => team_info[3], :abbreviation => team_info[4], :link => team_info[5]}))
       # unless skip_first_line
         # @teams({:teamid => row[0].to_i,
         #         :franchiseId => row[1],
@@ -29,7 +33,7 @@ class StatTracker
         # skip_first_line = false
       # end
     end
-    @teams
+    team_storage
   end
 end
 #
