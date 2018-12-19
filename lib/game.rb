@@ -8,6 +8,6 @@ class Game
     @games[game_id]
   end
 
-
+  
 
 end
