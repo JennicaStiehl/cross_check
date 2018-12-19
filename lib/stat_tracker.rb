@@ -5,11 +5,13 @@ require './lib/game'
 
 class StatTracker
   attr_reader :teams,
-              :games
+              :games,
+              :game_teams
 
   def initialize
     @teams = {}
     @games = {}
+    @game_teams = {}
   end
 
   def parse_teams(file_path)
@@ -63,7 +65,7 @@ class StatTracker
   skip_first_line = true
   CSV.foreach(file_path) do |row|
       unless skip_first_line
-        @games[row[0].to_i] = ([
+        @game_teams[row[0] + "_" + row[1]] = ([
           row[1],
           row[2],
           row[3],
@@ -83,6 +85,6 @@ class StatTracker
         skip_first_line = false
       end
     end
-    @games
+    @game_teams
   end
 end

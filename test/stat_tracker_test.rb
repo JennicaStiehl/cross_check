@@ -32,9 +32,9 @@ class StatTrackerTest < Minitest::Test
   def test_it_works_for_sample_game_team_info_file
     # skip
   stat_tracker = StatTracker.new
-  stat_tracker.parse_teams('./data/sample_game_teams_stats.csv')
-  expected = []
-  assert_equal expected, stat_tracker.parse_teams('./data/sample_game_teams_stats.csv')
+  stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+  expected = ({"2012030221_3"=>["3", "away", "FALSE", "OT", "John Tortorella", "2", "35", "44", "8", "3", "0", "44.8", "17", "7", nil], "2012030221_6"=>["6", "home", "TRUE", "OT", "Claude Julien", "3", "48", "51", "6", "4", "1", "55.2", "4", "5", nil], "2012030222_3"=>["3", "away", "FALSE", "REG", "John Tortorella", "2", "37", "33", "11", "5", "0", "51.7", "1", "4", nil], "2012030222_6"=>["6", "home", "TRUE", "REG", "Claude Julien", "5", "32", "36", "19", "1", "0", "48.3", "16", "6", nil]})
+  assert_equal expected, stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
   end
 
 end
