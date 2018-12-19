@@ -1,13 +1,11 @@
 class Game
 
-  def initialize(game)
-    @game = game
+  def initialize(games)
+    @games = games
   end
 
-  def game_info(gameid)
-    info_info = {}
-      game_info[@game[gameid]] = @game.values
-      game_info
+  def game_info(game_id)
+    @games[game_id]
   end
 
 
