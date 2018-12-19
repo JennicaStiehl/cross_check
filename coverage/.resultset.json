@@ -1,7 +1,11 @@
 {
   "Unit Tests": {
     "coverage": {
+      "/Users/eking/turing/1module/projects/cross_check/lib/storage.rb": [
+        1,
+        null
+      ]
     },
-    "timestamp": 1545065337
+    "timestamp": 1545241983
   }
 }
