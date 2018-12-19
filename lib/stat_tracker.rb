@@ -18,42 +18,39 @@ class StatTracker
   skip_first_line = true
   CSV.foreach(file_path) do |row|
       unless skip_first_line
-        @teams[row[0].to_i] = ([
-          row[1],
-          row[2],
-          row[3],
-          row[4],
-          row[5]])
+        @teams({:teamid => row[0].to_i,
+                :franchiseId => row[1],
+                :shortName => row[2],
+                :teamName => row[3],
+                :abbreviation => row[4],
+                :link => row[5]})
       else
         skip_first_line = false
       end
     end
     @teams
   end
-#"game_id","season","type","date_time","away_team_id","home_team_id",
-#{}"away_goals","home_goals","outcome","home_rink_side_start","venue",
-#{}"venue_link","venue_time_zone_id","venue_time_zone_offset",
-#{}"venue_time_zone_tz"
+
   def parse_games(file_path)
   skip_first_line = true
   CSV.foreach(file_path) do |row|
       unless skip_first_line
-        @games[row[0].to_i] = ([
-          row[1],
-          row[2],
-          row[3],
-          row[4],
-          row[5],
-          row[6],
-          row[7],
-          row[8],
-          row[9],
-          row[10],
-          row[11],
-          row[12],
-          row[13],
-          row[14],
-          row[15]])
+        @games[row[0].to_i] = ({
+                    :game_id => row[1],
+                    :season => row[2],
+                    :type => row[3],
+                    :date_time => row[4],
+                    :away_team_id => row[5],
+                    :home_team_id => row[6],
+                    :away_goals => row[7],
+                    :home_goals => row[8],
+                    :outcome => row[9],
+                    :home_rink_side_start => row[10],
+                    :venue_time_zone_id => row[11],
+                    :venue => row[12],
+                    :venue_link => row[13],
+                    :venue_time_zone_offset => row[14],
+                    :venue_time_zone_tz => row[15]})
       else
         skip_first_line = false
       end
@@ -65,26 +62,31 @@ class StatTracker
   skip_first_line = true
   CSV.foreach(file_path) do |row|
       unless skip_first_line
-        @game_teams[row[0] + "_" + row[1]] = ([
-          row[1],
-          row[2],
-          row[3],
-          row[4],
-          row[5],
-          row[6],
-          row[7],
-          row[8],
-          row[9],
-          row[10],
-          row[11],
-          row[12],
-          row[13],
-          row[14],
-          row[15]])
+        @game_teams{
+          :game_id => row[0],# + "_" + row[1]),
+          :team_id => row[1],
+          :HoA => row[2],
+          :won => row[3],
+          :settled_in => row[4],
+          :head_coach => row[5],
+          :goals => row[6],
+          :shots => row[7],
+          :hits => row[8],
+          :pim => row[9],
+          :powerPlayOpportunities => row[10],
+          :powerPlayGoals => row[11],
+          :faceOffWinPercentage => row[12],
+          :giveaways => row[13],
+          :takeaways => row[14]}
       else
         skip_first_line = false
       end
     end
     @game_teams
   end
+
+  CSV.foreach(@file_path, {headers: true, header_converters: :symbol}) do |row|
+      binding.pry
+      @cards << Card.new(row[:question], row[:answer], row[:category].to_sym)
+    end
 end
