@@ -20,6 +20,14 @@ class StatTrackerTest < Minitest::Test
     assert_equal expected, stat_tracker.parse_teams('./data/sample_team_info.csv').data[1].teamName
   end
 
+  def test_it_works_for_sample_team_info_file_2
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    expected = "23"
+    assert_equal expected, stat_tracker.parse_teams('./data/sample_team_info.csv').data[1].franchiseId
+  end
+
   def test_it_works_for_sample_game_info_file
     skip
     stat_tracker = StatTracker.new

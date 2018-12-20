@@ -1,6 +1,6 @@
 class Team
 
-  attr_accessor :team_id,
+  attr_accessor :teamid,
                 :franchiseId,
                 :shortName,
                 :teamName,
@@ -17,10 +17,6 @@ class Team
 
   end
 
-  # def team_info(teamid)
-  #   info_info = {}
-  #     team_info[@team[teamid]] = @team.values
-  #     team_info
-  # end
+
 
 end
