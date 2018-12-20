@@ -12,13 +12,14 @@ class TeamStorage < Storage
     @data
   end
 
-  def all
-    @data.values
-  end
+#commented out due to inheriting from storage
+  # def all
+  #   @data.values
+  # end
 
   def team_info(teamid)
     team_info = {}
-      team_info[@data[teamid]] = @data.values
+      team_info[@data[teamid]] = all
       team_info
   end
 

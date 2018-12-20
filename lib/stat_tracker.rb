@@ -4,26 +4,31 @@ require './lib/team'
 require './lib/game'
 require './lib/team_storage'
 require './lib/game_storage'
+require './lib/game_stats_module'
 
 class StatTracker
+
+  include GameStats
+
   attr_reader :teams,
               :games,
               :game_teams
               # :data
 
   def initialize
+    @teams = {}
     # @data = {}
     # @games = {}
     # @game_teams = {}
   end
 
   def parse_teams(file_path)
-    team_storage = TeamStorage.new
+    @teams = TeamStorage.new
     CSV.foreach(file_path, {headers: true, header_converters: :symbol}) do |team_info|
-    team_storage.add_team(Team.new({:team_id => team_info[0], :franchiseid => team_info[1], :shortname => (team_info[2]),
+    @teams.add_team(Team.new({:team_id => team_info[0], :franchiseid => team_info[1], :shortname => (team_info[2]),
           :teamname => team_info[3], :abbreviation => team_info[4], :link => team_info[5]}))
     end
-    team_storage
+    @teams
   end
 
 
