@@ -12,13 +12,14 @@ class GameStorage < Storage
     @data
   end
 
-  def all
-    @data.values
-  end
+#commented out due to inheriting from storage class
+  # def all
+  #   @data.values
+  # end
 
   def game_info(gameid)
     game_info = {}
-      game_info[@data[game_id]] = @data.values
+      game_info[@data[game_id]] = all
       game_info
   end
 

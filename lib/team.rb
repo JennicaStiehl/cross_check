@@ -1,3 +1,4 @@
+require 'pry'
 class Team
 
   attr_accessor :teamid,

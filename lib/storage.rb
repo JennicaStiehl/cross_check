@@ -1,7 +1,7 @@
 class Storage
 
   def all
-    @data
+    @data.values
   end
 
 end

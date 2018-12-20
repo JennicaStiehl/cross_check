@@ -1,26 +1,40 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper'
 require './lib/stat_tracker'
 require './lib/team_storage'
 
+
 class StatTrackerTest < Minitest::Test
 
-  def test_it_exists
-    stat_tracker = StatTracker.new
+  def setup
+    @stat_tracker = StatTracker.new
+    @get_team_info = @stat_tracker.parse_teams('./data/sample_team_info.csv')
+    # @team_storage = TeamStorage.new
+    # @team_info_1 = {:team_id => 1, :franchiseid => 23, :shortname => "New Jersey",
+    #       :teamname => "Devils", :abbreviation => "NJD", :link => "/api/v1/teams/1"}
+    # @team_1 = Team.new(@team_info_1)
+    # @team_4 = Team.new(@team_info)
+    # @team_14 = Team.new(@team_info)
+    # @team_26 = Team.new(@team_info)
+    # @team_storage.add_team(@team_1)
+    # @team_storage.add_team(@team_4)
+    # @team_storage.add_team(@team_14)
+    # @team_storage.add_team(@team_26)
+  end
 
-    assert_instance_of StatTracker, stat_tracker
+  def test_it_exists
+
+    assert_instance_of StatTracker, @stat_tracker
   end
 
 
   def test_it_works_for_sample_team_info_file
-    stat_tracker = StatTracker.new
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
 
-    expected = "Devils"
-    assert_equal expected, stat_tracker.parse_teams('./data/sample_team_info.csv').data[1].teamName
+
+    assert_equal @get_team_info.data, @stat_tracker.teams.data
   end
 
   def test_it_works_for_sample_team_info_file_2
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
@@ -43,6 +57,14 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
     expected = ({"2012030221_3"=>["3", "away", "FALSE", "OT", "John Tortorella", "2", "35", "44", "8", "3", "0", "44.8", "17", "7", nil], "2012030221_6"=>["6", "home", "TRUE", "OT", "Claude Julien", "3", "48", "51", "6", "4", "1", "55.2", "4", "5", nil], "2012030222_3"=>["3", "away", "FALSE", "REG", "John Tortorella", "2", "37", "33", "11", "5", "0", "51.7", "1", "4", nil], "2012030222_6"=>["6", "home", "TRUE", "REG", "Claude Julien", "5", "32", "36", "19", "1", "0", "48.3", "16", "6", nil]})
     assert_equal expected, stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+  end
+
+  def test_for_highest_total_score
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_game.csv')
+
+    assert_equal 7
   end
 
 end
