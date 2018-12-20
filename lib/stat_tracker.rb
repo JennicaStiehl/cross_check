@@ -2,63 +2,53 @@ require "csv"
 require 'pry'
 require './lib/team'
 require './lib/game'
+require './lib/team_storage'
+require './lib/game_storage'
 
 class StatTracker
   attr_reader :teams,
               :games,
               :game_teams
+              # :data
 
   def initialize
-    @teams = []
-    @games = {}
-    @game_teams = {}
+    # @data = {}
+    # @games = {}
+    # @game_teams = {}
   end
 
   def parse_teams(file_path)
-  # skip_first_line = true
-  CSV.foreach(file_path, {headers: true, header_converters: :downcase, header_converters: :symbol}) do |team_info|
-    @teams << Team.new(team_info)
-      # unless skip_first_line
-        # @teams({:teamid => row[0].to_i,
-        #         :franchiseId => row[1],
-        #         :shortName => row[2],
-        #         :teamName => row[3],
-        #         :abbreviation => row[4],
-        #         :link => row[5]})
-      # else
-        # skip_first_line = false
-      # end
+    team_storage = TeamStorage.new
+    CSV.foreach(file_path, {headers: true, header_converters: :symbol}) do |team_info|
+    team_storage.add_team(Team.new({:team_id => team_info[0], :franchiseid => team_info[1], :shortname => (team_info[2]),
+          :teamname => team_info[3], :abbreviation => team_info[4], :link => team_info[5]}))
     end
-    @teams
+    team_storage
   end
-end
-#
-#   def parse_games(file_path)
-#   skip_first_line = true
-#   CSV.foreach(file_path) do |row|
-#       unless skip_first_line
-#         @games[row[0].to_i] = ({
-#                     :game_id => row[1],
-#                     :season => row[2],
-#                     :type => row[3],
-#                     :date_time => row[4],
-#                     :away_team_id => row[5],
-#                     :home_team_id => row[6],
-#                     :away_goals => row[7],
-#                     :home_goals => row[8],
-#                     :outcome => row[9],
-#                     :home_rink_side_start => row[10],
-#                     :venue_time_zone_id => row[11],
-#                     :venue => row[12],
-#                     :venue_link => row[13],
-#                     :venue_time_zone_offset => row[14],
-#                     :venue_time_zone_tz => row[15]})
-#       else
-#         skip_first_line = false
-#       end
-#     end
-#     @games
-#   end
+
+
+  def parse_games(file_path)
+    game_storage = GameStorage.new
+    CSV.foreach(file_path, {headers: true, header_converters: :symbol}) do |game_info|
+    game_storage.add_game(Game.new({
+                    :game_id => game_info[0],
+                    :season => game_info[1],
+                    :type => game_info[2],
+                    :date_time => game_info[3],
+                    :away_team_id => game_info[4],
+                    :home_team_id => game_info[5],
+                    :away_goals => game_info[6],
+                    :home_goals => game_info[7],
+                    :outcome => game_info[8],
+                    :home_rink_side_start => game_info[9],
+                    :venue_time_zone_id => game_info[10],
+                    :venue => game_info[11],
+                    :venue_link => game_info[12],
+                    :venue_time_zone_offset => game_info[13],
+                    :venue_time_zone_tz => game_info[14]}))
+    end
+    game_storage
+  end
 #
 #   def parse_game_teams(file_path)
 #   skip_first_line = true
@@ -91,4 +81,4 @@ end
 #       @cards << Card.new(row[:question], row[:answer], row[:category].to_sym)
 #     end
 #     @team << Team.new(row[:question], row[:answer], row[:category].to_sym)
-# end
+end
