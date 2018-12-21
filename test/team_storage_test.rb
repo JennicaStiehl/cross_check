@@ -11,19 +11,20 @@ class TeamStorageTest < Minitest::Test
   end
 
   def test_it_can_get_all_of_the_team_data
-    team_storage = TeamStorage.new
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
-    assert_equal ([]), stat_tracker.parse_teams('./data/sample_team_info.csv').all
+    assert_equal "/api/v1/teams/1", stat_tracker.team_storage.teams[1].link
+    assert_equal "New Jersey", stat_tracker.team_storage.teams[1].shortName
+    assert_equal "Devils", stat_tracker.team_storage.teams[1].teamName
   end
 
-  def test_it_can_print_team_info
-    team_storage = TeamStorage.new
+  def test_it_can_return_team_info
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
-    expected = ({1=>["23", "New Jersey", "Devils", "NJD", "/api/v1/teams/1"]})
-    assert_equal expected, stat_tracker.parse_teams('./data/sample_team_info.csv').data
+    expected = ({:teamid=>"1", :franchiseid=>"23", :shortname=>"New Jersey", :teamname=>"Devils", :abbreviation=>"NJD", :link=>"/api/v1/teams/1"})
+    assert_equal expected, stat_tracker.team_storage.team_info(1)
   end
+
 end
