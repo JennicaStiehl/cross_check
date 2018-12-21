@@ -1,26 +1,20 @@
 require './lib/storage'
 
-class TeamStorage < Storage
-  attr_accessor   :data
+class TeamStorage #< Storage
+  attr_accessor   :team_storage,
+                  :teams
 
   def initialize
-    @data = {}
+    @teams = {}
   end
 
   def add_team(team)
-    @data[team.teamid.to_i] = team
-    @data
+    @teams[team.teamid.to_i] = team
+    @teams
   end
 
-#commented out due to inheriting from storage
-  # def all
-  #   @data.values
-  # end
-
   def team_info(teamid)
-    team_info = {}
-      team_info[@data[teamid]] = all
-      team_info
+      @teams[teamid].team_info
   end
 
 end

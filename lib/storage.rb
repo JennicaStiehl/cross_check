@@ -1,7 +1,7 @@
-class Storage
-
-  def all
-    @data.values
-  end
-
-end
+# class Storage
+#
+#   def all
+#     @data.values
+#   end
+#
+# end

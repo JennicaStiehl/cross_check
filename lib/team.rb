@@ -18,6 +18,15 @@ class Team
 
   end
 
-
-
+#tested on team storage
+  def team_info
+    team_info = {}
+    team_info[:teamid] = @teamid
+    team_info[:franchiseid] = @franchiseId
+    team_info[:shortname] = @shortName
+    team_info[:teamname] = @teamName
+    team_info[:abbreviation] = @abbreviation
+    team_info[:link] = @link
+    team_info
+  end
 end

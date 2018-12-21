@@ -33,10 +33,4 @@ class Game
     @venue_time_zone_tz = game_info[:venue_time_zone_tz]
   end
 
-  # def game_info(game_id)
-  #   @games[game_id]
-  # end
-
-
-
 end
