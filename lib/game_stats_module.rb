@@ -16,4 +16,14 @@ module GameStats
     highest
   end
 
+  def biggest_blowout	#Highest difference between winner and loser
+    blowout = 0
+    @games.values.each do |game|
+      diff = (game.away_goals.to_i - game.home_goals.to_i).abs
+      if diff > blowout
+        blowout = diff
+      end
+    end
+    blowout
+  end
 end
