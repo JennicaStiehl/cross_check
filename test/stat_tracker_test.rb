@@ -15,17 +15,7 @@ class StatTrackerTest < Minitest::Test
     @get_team_info = @stat_tracker.parse_teams('./data/sample_team_info.csv')
     @get_game_info = @stat_tracker.parse_games('./data/sample_game.csv')
     @get_game_teams_info = @stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
-    # @team_storage = TeamStorage.new
-    # @team_info_1 = {:team_id => 1, :franchiseid => 23, :shortname => "New Jersey",
-    #       :teamname => "Devils", :abbreviation => "NJD", :link => "/api/v1/teams/1"}
-    # @team_1 = Team.new(@team_info_1)
-    # @team_4 = Team.new(@team_info)
-    # @team_14 = Team.new(@team_info)
-    # @team_26 = Team.new(@team_info)
-    # @team_storage.add_team(@team_1)
-    # @team_storage.add_team(@team_4)
-    # @team_storage.add_team(@team_14)
-    # @team_storage.add_team(@team_26)
+    @game_1 = mock("game")
   end
 
   def test_it_exists
@@ -67,6 +57,10 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_biggest_blowout
     assert_equal 3, @stat_tracker.biggest_blowout
+  end
+
+  def test_it_can_search_any_collection_by_id
+    assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030221)
   end
 
 end

@@ -5,6 +5,9 @@ require './lib/stat_tracker'
 
 module GameStats
 
+  def search_any_collection_by_id(collection, id)
+      collection[id]
+  end
 
   def highest_score	#Highest sum of the winning and losing teams’ scores
     highest = 0
