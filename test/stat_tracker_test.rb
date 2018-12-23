@@ -14,18 +14,11 @@ class StatTrackerTest < Minitest::Test
     @stat_tracker = StatTracker.new
     @get_team_info = @stat_tracker.parse_teams('./data/sample_team_info.csv')
     @get_game_info = @stat_tracker.parse_games('./data/sample_game.csv')
+    @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
     @get_game_teams_info = @stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
-    # @team_storage = TeamStorage.new
-    # @team_info_1 = {:team_id => 1, :franchiseid => 23, :shortname => "New Jersey",
-    #       :teamname => "Devils", :abbreviation => "NJD", :link => "/api/v1/teams/1"}
-    # @team_1 = Team.new(@team_info_1)
-    # @team_4 = Team.new(@team_info)
-    # @team_14 = Team.new(@team_info)
-    # @team_26 = Team.new(@team_info)
-    # @team_storage.add_team(@team_1)
-    # @team_storage.add_team(@team_4)
-    # @team_storage.add_team(@team_14)
-    # @team_storage.add_team(@team_26)
+    @game_1 = mock("game")
+    @game_teams_1 = mock("game_teams")
+    @team_1 = mock("teams")
   end
 
   def test_it_exists
@@ -37,7 +30,10 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_works_for_sample_game_info
-    assert_equal "20122013", @stat_tracker.games[2012030221].season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    assert_equal "20122013", stat_tracker.games[2012030221].season
   end
 
   def test_it_works_for_sample_game_team_info
@@ -66,7 +62,62 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_biggest_blowout
-    assert_equal 3, @stat_tracker.biggest_blowout
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    assert_equal 3, stat_tracker.biggest_blowout
   end
 
+  def test_it_can_search_any_collection_by_id
+    skip
+    assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030166)
+  end
+
+  def test_it_can_search_any_collection_by_id_2
+    skip
+    assert_equal @game_teams_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.game_teams, 3)
+  end
+
+  def test_it_can_search_any_collection_by_id_3
+    skip
+    assert_equal @team_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.teams, 1)
+  end
+
+  def test_it_can_calculate_best_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    assert_equal "20152016", stat_tracker.best_season(stat_tracker.games, "3")
+  end
+
+  def test_it_can_calculate_worst_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    assert_equal "20122013", stat_tracker.worst_season(stat_tracker.games, "3")
+  end
+
+  def test_it_can_find_home_team_goals
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_game.csv')
+
+    assert_equal 5, stat_tracker.find_home_team_goals_from_games(stat_tracker.games,"3")
+  end
+
+  def test_it_can_count_wins
+    assert_equal ({"20122013"=>4, "20152016"=>5}), @stat_tracker.wins_by_season(@stat_tracker.games, "3")
+  end
+
+  def test_it_can_calculate_percentage_wins
+    stat_tracker = StatTracker.new
+    get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
+
+    assert_equal 25, stat_tracker.win_percentage(stat_tracker.games, "3")
+  end
+
+  def test_it_can_collect_seasons_list
+    skip
+    assert_equal ["20122013", "20122013", "20122013", "20122013"], @stat_tracker.seasons(@stat_tracker.games, "3")
+  end
 end
