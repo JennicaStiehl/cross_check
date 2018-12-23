@@ -23,6 +23,7 @@ class StatTracker
     @team_storage = {}
     @game_storage = {}
     @game_team_storage = {}
+
   end
 
   def parse_teams(file_path)
@@ -79,5 +80,7 @@ class StatTracker
       end
       @games
     end
+
+
 
 end

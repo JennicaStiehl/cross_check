@@ -99,5 +99,21 @@ module GameStats
   #   end
   #   goals
   # end
+  def percentage_home_wins
+    percentage_home_wins = 0
+    total_games_played = 0
+    total_home_games_won = []
+    # find the total games played
+    total_games_played = @game_storage.games.keys.count
+    # find the total home games played and won
+    total_home_games_won = @game_storage.games.values.select do |game|
+      game.outcome.include?("home")
+    end
+    #do the math and return it
+    percentage_home_wins = total_home_games_won.count.to_f / total_games_played.to_f
+
+    return percentage_home_wins
+  end
+
 
 end

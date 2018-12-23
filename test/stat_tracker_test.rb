@@ -14,7 +14,7 @@ class StatTrackerTest < Minitest::Test
     @stat_tracker = StatTracker.new
     @get_team_info = @stat_tracker.parse_teams('./data/sample_team_info.csv')
     @get_game_info = @stat_tracker.parse_games('./data/sample_game.csv')
-    @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
+    # @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
     @get_game_teams_info = @stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
     @game_1 = mock("game")
     @game_teams_1 = mock("game_teams")
@@ -22,14 +22,17 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_exists
+    skip
     assert_instance_of StatTracker, @stat_tracker
   end
 
   def test_it_works_for_sample_team_info_file
+    skip
     assert_equal "NJD", @stat_tracker.teams[1].abbreviation
   end
 
   def test_it_works_for_sample_game_info
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -37,6 +40,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_works_for_sample_game_team_info
+    skip
     assert_equal "away", @stat_tracker.game_teams[3].HoA
   end
 
@@ -58,10 +62,12 @@ class StatTrackerTest < Minitest::Test
   # end
 
   def test_for_highest_total_score
+    skip
     assert_equal 5, @stat_tracker.highest_score
   end
 
   def test_it_can_calculate_biggest_blowout
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -84,6 +90,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_best_season
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -91,6 +98,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_worst_season
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -106,10 +114,12 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_count_wins
+    skip
     assert_equal ({"20122013"=>4, "20152016"=>5}), @stat_tracker.wins_by_season(@stat_tracker.games, "3")
   end
 
   def test_it_can_calculate_percentage_wins
+    skip
     stat_tracker = StatTracker.new
     get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -120,4 +130,16 @@ class StatTrackerTest < Minitest::Test
     skip
     assert_equal ["20122013", "20122013", "20122013", "20122013"], @stat_tracker.seasons(@stat_tracker.games, "3")
   end
+
+  def test_it_can_calculate_percentage_home_wins
+    # skip
+    # @stat_tracker
+    # @get_game_info
+    stat_tracker = StatTracker.new
+    get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
+    # @game_1 = mock("game")
+
+    assert_equal 0.75, @stat_tracker.percentage_home_wins
+  end
+
 end
