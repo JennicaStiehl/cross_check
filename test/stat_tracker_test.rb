@@ -14,7 +14,7 @@ class StatTrackerTest < Minitest::Test
     @stat_tracker = StatTracker.new
     @get_team_info = @stat_tracker.parse_teams('./data/sample_team_info.csv')
     @get_game_info = @stat_tracker.parse_games('./data/sample_game.csv')
-    # @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
+    @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
     @get_game_teams_info = @stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
     @get_longer_game_info = @stat_tracker.parse_game_teams('./data/longer_sample_game.csv')
     @game_1 = mock("game")
@@ -52,14 +52,14 @@ class StatTrackerTest < Minitest::Test
   #
   #   assert_equal expected, stat_tracker.parse_games('./data/sample_game.csv')
   # end
-  #
-  # def test_it_works_for_sample_game_team_info_file
-  #   skip
-  #   stat_tracker = StatTracker.new
-  #   stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
-  #   expected = ({"2012030221_3"=>["3", "away", "FALSE", "OT", "John Tortorella", "2", "35", "44", "8", "3", "0", "44.8", "17", "7", nil], "2012030221_6"=>["6", "home", "TRUE", "OT", "Claude Julien", "3", "48", "51", "6", "4", "1", "55.2", "4", "5", nil], "2012030222_3"=>["3", "away", "FALSE", "REG", "John Tortorella", "2", "37", "33", "11", "5", "0", "51.7", "1", "4", nil], "2012030222_6"=>["6", "home", "TRUE", "REG", "Claude Julien", "5", "32", "36", "19", "1", "0", "48.3", "16", "6", nil]})
-  #   assert_equal expected, stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
-  # end
+
+  def test_it_works_for_sample_game_team_info_file
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+    expected = ({"2012030221_3"=>["3", "away", "FALSE", "OT", "John Tortorella", "2", "35", "44", "8", "3", "0", "44.8", "17", "7", nil], "2012030221_6"=>["6", "home", "TRUE", "OT", "Claude Julien", "3", "48", "51", "6", "4", "1", "55.2", "4", "5", nil], "2012030222_3"=>["3", "away", "FALSE", "REG", "John Tortorella", "2", "37", "33", "11", "5", "0", "51.7", "1", "4", nil], "2012030222_6"=>["6", "home", "TRUE", "REG", "Claude Julien", "5", "32", "36", "19", "1", "0", "48.3", "16", "6", nil]})
+    assert_equal expected, stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+  end
 
   def test_for_highest_total_score
     skip
@@ -89,21 +89,21 @@ class StatTrackerTest < Minitest::Test
     assert_equal @team_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.teams, 1)
   end
 
-  # def test_it_can_calculate_best_season
-  #   skip
-  #   stat_tracker = StatTracker.new
-  #   stat_tracker.parse_games('./data/sample_game_seasons.csv')
-  #
-  #   assert_equal "20152016", stat_tracker.best_season(stat_tracker.games, "3")
-  # end
+  def test_it_can_calculate_best_season
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-  # def test_it_can_calculate_worst_season
-  #   skip
-  #   stat_tracker = StatTracker.new
-  #   stat_tracker.parse_games('./data/sample_game_seasons.csv')
-  #
-  #   assert_equal "20122013", stat_tracker.worst_season(stat_tracker.games, "3")
-  # end
+    assert_equal "20152016", stat_tracker.best_season(stat_tracker.games, "3")
+  end
+
+  def test_it_can_calculate_worst_season
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    assert_equal "20122013", stat_tracker.worst_season(stat_tracker.games, "3")
+  end
 
   # def test_it_can_find_home_team_goals
   #   skip
@@ -147,6 +147,6 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
-    assert_equal 4.98, stat_tracker.avg_goals_per_game  
+    assert_equal 4.98, stat_tracker.avg_goals_per_game
   end
 end
