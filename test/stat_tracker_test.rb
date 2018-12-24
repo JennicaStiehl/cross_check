@@ -143,8 +143,15 @@ class StatTrackerTest < Minitest::Test
     # skip
     @stat_tracker
     @get_game_info
-  
+
     assert_equal 0.25, @stat_tracker.percentage_visitor_wins
+  end
+
+  def test_it_can_calculate_season_with_most_games
+    @stat_tracker
+    @get_game_info
+
+    assert_equal 20122013, @stat_tracker.season_with_most_games
   end
 
 end
