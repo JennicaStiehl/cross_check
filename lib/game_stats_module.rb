@@ -104,7 +104,7 @@ module GameStats
   def sort_games_by_venue
     venues = []
     @games.each do |game|
-      venues << game[1].venue_time_zone_id
+      venues << game[1].venue
     end
     venues
   end

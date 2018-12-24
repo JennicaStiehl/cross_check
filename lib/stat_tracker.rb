@@ -71,9 +71,9 @@ class StatTracker
                       :home_goals => game_info[7],
                       :outcome => game_info[8],
                       :home_rink_side_start => game_info[9],
-                      :venue_time_zone_id => game_info[10],
-                      :venue => game_info[11],
-                      :venue_link => game_info[12],
+                      :venue_time_zone_id => game_info[12],
+                      :venue => game_info[10],
+                      :venue_link => game_info[11],
                       :venue_time_zone_offset => game_info[13],
                       :venue_time_zone_tz => game_info[14]}))
       end
