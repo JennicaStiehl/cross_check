@@ -68,6 +68,13 @@ class StatTrackerTest < Minitest::Test
     assert_equal 3, stat_tracker.biggest_blowout
   end
 
+  def test_it_can_calculate_biggest_team_blowout
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    assert_equal 3, stat_tracker.biggest_team_blowout("3")
+  end
+
   def test_it_can_search_any_collection_by_id
     skip
     assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030166)

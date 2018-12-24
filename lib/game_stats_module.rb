@@ -10,46 +10,44 @@ module GameStats
       collection[id]
   end
 
-  def highest_score	#Highest sum of the winning and losing teams’ scores
-    highest = 0
-    @game_teams.values.each do |game|
-      if game.goals.to_i > highest
-        highest = game.goals.to_i
-      end
+  def highest_score
+    highest = @game_teams.values.max_by do |game|
+      game.goals.to_i
     end
-    highest
+    highest.goals.to_i
   end
 
-  def biggest_blowout	#Highest difference between winner and loser
-    blowout = 0
-    @games.values.each do |game|
-      diff = (game.away_goals.to_i - game.home_goals.to_i).abs
-      if diff > blowout
-        blowout = diff
+  def biggest_blowout
+    blowout = @games.values.max_by do |game|
+      (game.away_goals.to_i - game.home_goals.to_i).abs
+    end
+    (blowout.away_goals.to_i - blowout.home_goals.to_i).abs
+  end
+
+  def biggest_team_blowout(team_id)
+    blowout = @games.values.max_by do |game|
+      if game.home_team_id == team_id || game.away_team_id == team_id
+        (game.away_goals.to_i - game.home_goals.to_i).abs
       end
     end
-    blowout
+    (blowout.away_goals.to_i - blowout.home_goals.to_i).abs
   end
 
   def best_season(collection = @games, team_id)
     wins = wins_by_season(collection = @games, team_id)
-    best = 0
-    wins.each do |season, num_wins|
-      if num_wins > best
-        best = num_wins
-      end
+    best = wins.max_by do |season, num_wins|
+      num_wins
     end
+    best = best[1]
     wins.key(best)
   end
 
   def worst_season(collection = @games, team_id)
     wins = wins_by_season(collection = @games, team_id)
-    worst = 100
-    wins.each do |season, num_wins|
-      if num_wins < worst
-        worst = num_wins
-      end
+    worst = wins.min_by do |season, num_wins|
+      num_wins
     end
+    worst = worst[1]
     wins.key(worst)
   end
 
