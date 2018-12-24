@@ -80,7 +80,14 @@ class StatTracker
       end
       @games
     end
+    # Erin's Iteration 3: League and Season Stats
+    def count_of_teams
+      total_number_of_teams = 0 #integer
 
+      total_number_of_teams = @team_storage.teams.count
+
+      return total_number_of_teams
+    end
 
 
 end

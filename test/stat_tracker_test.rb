@@ -168,4 +168,13 @@ class StatTrackerTest < Minitest::Test
     # expected =
     assert_equal ({20122013 => 3, 20132014 => 1}), @stat_tracker.count_of_games_by_season
   end
+
+  # Erin's Iteration 3: League and Season Stats
+  def test_it_can_get_count_of_teams
+    @stat_tracker
+    @get_team_info
+
+    assert_equal 1, @stat_tracker.count_of_teams
+  end
+
 end
