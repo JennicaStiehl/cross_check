@@ -130,6 +130,7 @@ module GameStats
 
     return percentage_visitor_wins
   end
+
   def season_with_most_games
     season_with_most_games = 0
 
@@ -143,4 +144,19 @@ module GameStats
 
     return season_with_most_games.to_i #two years, 8 digit integer
   end
+
+  def season_with_fewest_games
+    season_with_fewest_games = 0
+
+    total_games_by_season = @game_storage.games.values.group_by do |game|
+      game.season
+    end
+
+    season_with_fewest_games = total_games_by_season.keys.min do |season_1, season_2|
+      total_games_by_season[season_1].count <=> total_games_by_season[season_2].count
+    end
+
+    return season_with_fewest_games.to_i #two years, 8 digit integer
+  end
+
 end
