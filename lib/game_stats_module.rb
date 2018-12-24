@@ -159,4 +159,17 @@ module GameStats
     return season_with_fewest_games.to_i #two years, 8 digit integer
   end
 
+  def count_of_games_by_season
+    count_of_games_by_season = {} #{season (integer): number_of_games (integer)}
+
+    total_games_by_season = @game_storage.games.values.group_by do |game|
+      game.season
+    end
+
+    total_games_by_season.keys.each do |season|
+      count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
+    end
+    count_of_games_by_season
+  end
+
 end
