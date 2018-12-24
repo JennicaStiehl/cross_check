@@ -75,20 +75,20 @@ class StatTrackerTest < Minitest::Test
     assert_equal 3, stat_tracker.biggest_team_blowout("3")
   end
 
-  def test_it_can_search_any_collection_by_id
-    skip
-    assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030166)
-  end
-
-  def test_it_can_search_any_collection_by_id_2
-    skip
-    assert_equal @game_teams_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.game_teams, 3)
-  end
-
-  def test_it_can_search_any_collection_by_id_3
-    skip
-    assert_equal @team_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.teams, 1)
-  end
+  # def test_it_can_search_any_collection_by_id
+  #   skip
+  #   assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030166)
+  # end
+  #
+  # def test_it_can_search_any_collection_by_id_2
+  #   skip
+  #   assert_equal @game_teams_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.game_teams, 3)
+  # end
+  #
+  # def test_it_can_search_any_collection_by_id_3
+  #   skip
+  #   assert_equal @team_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.teams, 1)
+  # end
 
   def test_it_can_calculate_best_season
     stat_tracker = StatTracker.new
@@ -104,14 +104,6 @@ class StatTrackerTest < Minitest::Test
     assert_equal "20122013", stat_tracker.worst_season(stat_tracker.games, "3")
   end
 
-  def test_it_can_find_home_team_goals
-    skip
-    stat_tracker = StatTracker.new
-    stat_tracker.parse_teams('./data/sample_game.csv')
-
-    assert_equal 5, stat_tracker.find_home_team_goals_from_games(stat_tracker.games,"3")
-  end
-
   def test_it_can_count_wins_by_season
     assert_equal ({"20122013"=>4, "20152016"=>5}), @stat_tracker.wins_by_season(@stat_tracker.games, "3")
   end
@@ -121,11 +113,6 @@ class StatTrackerTest < Minitest::Test
     get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
 
     assert_equal 20.0, stat_tracker.win_percentage(stat_tracker.games, "3")
-  end
-
-  def test_it_can_collect_seasons_list
-    skip
-    assert_equal ["20122013", "20122013", "20122013", "20122013"], @stat_tracker.seasons(@stat_tracker.games, "3")
   end
 
   def test_it_can_find_highest_scoring_visitor
