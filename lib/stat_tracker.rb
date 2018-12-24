@@ -71,13 +71,68 @@ class StatTracker
                       :home_goals => game_info[7],
                       :outcome => game_info[8],
                       :home_rink_side_start => game_info[9],
-                      :venue_time_zone_id => game_info[10],
-                      :venue => game_info[11],
-                      :venue_link => game_info[12],
+                      :venue_time_zone_id => game_info[12],
+                      :venue => game_info[10],
+                      :venue_link => game_info[11],
                       :venue_time_zone_offset => game_info[13],
                       :venue_time_zone_tz => game_info[14]}))
       end
       @games
     end
 
+    def highest_scoring_visitor	#Name of the team with the highest average score per game across all seasons when they are away.
+      highest = 0
+      name = "name"
+      high_score_team_id = ""
+      @games.values.each do |game|
+        if game.away_goals.to_i > highest
+          highest = game.away_goals.to_i
+          high_score_team_id = game.away_team_id
+        end
+      name = get_team_name_from_id(high_score_team_id)
+      end
+      name
+    end
+
+    def highest_scoring_home_team	#Name of the team with the highest average score per game across all seasons when they are away.
+      highest = 0
+      high_score_team_id = ""
+      name = "name"
+      @games.values.each do |game|
+        if game.home_goals.to_i > highest
+          highest = game.home_goals.to_i
+          high_score_team_id = game.home_team_id
+        end
+      name = get_team_name_from_id(high_score_team_id)
+      end
+      name
+    end
+
+    def lowest_scoring_visitor	#Name of the team with the lowest average score per game across all seasons when they are away.
+      lowest = 100
+      name = "name"
+      low_score_team_id = ""
+      @games.values.each do |game|
+        if game.away_goals.to_i < lowest
+          lowest = game.away_goals.to_i
+          low_score_team_id = game.away_team_id
+        end
+      name = get_team_name_from_id(low_score_team_id)
+      end
+      name
+    end
+
+    def lowest_scoring_home_team	#Name of the team with the lowest average score per game across all seasons when they are away.
+      lowest = 100
+      low_score_team_id = ""
+      name = "name"
+      @games.values.each do |game|
+        if game.home_goals.to_i < lowest
+          lowest = game.home_goals.to_i
+          low_score_team_id = game.home_team_id
+        end
+      name = get_team_name_from_id(low_score_team_id)
+      end
+      name
+    end
 end

@@ -113,11 +113,44 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
 
-    assert_equal 25, stat_tracker.win_percentage(stat_tracker.games, "3")
+    assert_equal 20.0, stat_tracker.win_percentage(stat_tracker.games, "3")
   end
 
   def test_it_can_collect_seasons_list
     skip
     assert_equal ["20122013", "20122013", "20122013", "20122013"], @stat_tracker.seasons(@stat_tracker.games, "3")
+  end
+
+  def test_it_can_find_highest_scoring_visitor
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.get_team_name_from_id("3")
+    assert_equal "Bruins", stat_tracker.highest_scoring_visitor
+  end
+
+  def test_it_can_find_highest_scoring_home_team
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Bruins", stat_tracker.highest_scoring_home_team
+  end
+
+  def test_it_can_find_lowest_scoring_home_team
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.lowest_scoring_home_team
+  end
+
+  def test_it_can_find_lowest_scoring_visitor
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.lowest_scoring_visitor
   end
 end

@@ -99,5 +99,13 @@ module GameStats
   #   end
   #   goals
   # end
-
+  def get_team_name_from_id(team_id)
+    name = ""
+    @teams.values.each do |team|
+      if team.teamid == team_id
+      name = team.teamName
+      end
+    end
+    name
+  end
 end
