@@ -131,18 +131,16 @@ module GameStats
     return percentage_visitor_wins
   end
   def season_with_most_games
-    season_with_most_games = 0 #two years, 8 digit integer
+    season_with_most_games = 0
+
     total_games_by_season = @game_storage.games.values.group_by do |game|
       game.season
     end
 
-    holder = total_games_by_season.max do |season_1, season_2|
-      season_1.values.count <=> season_2.values.count
+    season_with_most_games = total_games_by_season.keys.max do |season_1, season_2|
+      total_games_by_season[season_1].count <=> total_games_by_season[season_2].count
     end
-    # a.max(2) {|a, b| a.length <=> b.length }
-binding.pry
-    return season_with_most_games #two years, 8 digit integer
-  end
-# Integer representation (e.g. 20122013) of the season in which the most games were held
 
+    return season_with_most_games.to_i #two years, 8 digit integer
+  end
 end
