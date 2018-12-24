@@ -153,4 +153,20 @@ class StatTrackerTest < Minitest::Test
 
     assert_equal "Rangers", stat_tracker.lowest_scoring_visitor
   end
+
+  def test_it_can_find_most_goals_in_a_game
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal 7, stat_tracker.highest_total_score
+  end
+
+  def test_it_can_find_least_goals_in_a_game
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal 3, stat_tracker.lowest_total_score
+  end
 end
