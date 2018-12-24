@@ -100,4 +100,54 @@ module GameStats
   #   goals
   # end
 
+#needed to set up most/least popular venue
+  def sort_games_by_venue
+    venues = []
+    @games.each do |game|
+      venues << game[1].venue_time_zone_id
+    end
+    venues
+  end
+
+#needed to set up most/least popular venue
+  def order_games_by_venue
+    most_popular_venue = Hash.new(0)
+    sort_games_by_venue.each do |venue|
+      most_popular_venue[venue] += 1
+    end
+    most_popular_venue
+  end
+
+
+  def most_popular_venue
+    popular_venue_array = []
+    popular_venue_array = order_games_by_venue.sort_by do |key, value|
+      value
+    end
+    popular_venue_array[-1][0]
+  end
+
+  def least_popular_venue
+    unpopular_venue_array = []
+    unpopular_venue_array = order_games_by_venue.sort_by do |key, value|
+      value
+    end
+    unpopular_venue_array[0][0]
+  end
+
+#needed to setup avg goals per game
+  def total_goals_per_game
+    total_goals = 0.00
+    @games.each do |game|
+      total_goals += (game[1].away_goals.to_f + game[1].home_goals.to_f)
+      end
+      total_goals
+  end
+
+  def avg_goals_per_game
+    average_goals = 0.00
+    average_goals = total_goals_per_game / @games.length.to_f
+    average_goals
+  end
+
 end
