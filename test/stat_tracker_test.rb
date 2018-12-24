@@ -133,13 +133,18 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_percentage_home_wins
     # skip
-    # @stat_tracker
-    # @get_game_info
-    stat_tracker = StatTracker.new
-    get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
-    # @game_1 = mock("game")
+    @stat_tracker
+    @get_game_info
 
     assert_equal 0.75, @stat_tracker.percentage_home_wins
+  end
+
+  def test_it_can_calculate_percentage_vistor_wins
+    # skip
+    @stat_tracker
+    @get_game_info
+  
+    assert_equal 0.25, @stat_tracker.percentage_visitor_wins
   end
 
 end
