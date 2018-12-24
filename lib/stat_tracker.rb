@@ -122,4 +122,13 @@ class StatTracker
     sum.away_goals.to_i + sum.home_goals.to_i
   end
 
+  def head_to_head(team_id, opponent_id)
+    head_to_head = {}
+    t = win_loss(team_id)
+    o = win_loss(opponent_id)
+    head_to_head[t.keys] = t.values.flatten
+    head_to_head[o.keys] = o.values.flatten
+    head_to_head
+  end
+
 end

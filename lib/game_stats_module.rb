@@ -69,6 +69,16 @@ module GameStats
     wins
   end
 
+  def losses(collection = @games, team_id)
+    loses = 0
+    collection.values.each do |game|
+      if (game.outcome != "home win" && game.home_team_id == team_id) || (game.outcome != "away win" && game.away_team_id == team_id)
+        loses += 1
+      end
+    end
+    loses
+  end
+
   def wins_by_season(collection = @games, team_id)
     wins = 0
     wins_by_season = {}
@@ -106,4 +116,14 @@ module GameStats
     end
     name
   end
+
+  def win_loss(team_id)
+    h2h = {}
+    w = wins(team_id)
+    l = losses(team_id)
+    t = get_team_name_from_id(team_id)
+    h2h[t] = "#{w}:#{l}"
+    h2h
+  end
+
 end
