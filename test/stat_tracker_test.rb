@@ -177,4 +177,11 @@ class StatTrackerTest < Minitest::Test
     assert_equal 1, @stat_tracker.count_of_teams
   end
 
+  def test_it_can_calculate_the_winningest_team
+    @stat_tracker
+    @get_game_teams_info
+
+    assert_equal "Maple Leafs", @stat_tracker.winningest_team
+  end
+
 end

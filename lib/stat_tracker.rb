@@ -89,5 +89,22 @@ class StatTracker
       return total_number_of_teams
     end
 
+    def winningest_team
+      team_with_highest_win_percentage_across_all_seasons = "Team Name"
+      # sample_game_teams_stats- "won" == "TRUE", then total it, see who has most
+
+      teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
+        game_team.team_id
+      end
+      binding.pry
+        # total_games_by_season = @game_storage.games.values.group_by do |game|
+        #   game.season
+        # end
+      # team_id from game_team_stats pulls team name string from team_info "teamName"
+
+      team_with_highest_win_percentage_across_all_seasons
+    end
+
+# 	Name of the team with the highest win percentage across all seasons.	String
 
 end
