@@ -6,10 +6,13 @@ class GameTeamStorage #< Storage
 
   def initialize
     @game_teams = {}
+
   end
 
   def add_game_team(game_team)
-    @game_teams[game_team.team_id.to_i] = game_team
+    # @game_teams[game_team.team_id.to_i] = game_team
+    @game_teams[game_team.game_id + game_team.team_id] = game_team
+    
     @game_teams
   end
 

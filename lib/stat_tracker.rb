@@ -90,22 +90,28 @@ class StatTracker
     end
 
     def winningest_team
-      team_with_highest_win_percentage_across_all_seasons = "Team Name"
-      # sample_game_teams_stats- "won" == "TRUE", then total it, see who has most
+      team_with_highest_win_percentage_across_all_seasons = ""
 
       teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
         game_team.team_id
       end
-      binding.pry
-        # total_games_by_season = @game_storage.games.values.group_by do |game|
-        #   game.season
-        # end
-      # team_id from game_team_stats pulls team name string from team_info "teamName"
+
+      game_win_percentage = {}
+      teams_by_id.keys.each do |team_id|
+        count = teams_by_id[team_id].count
+        wins = teams_by_id[team_id].select do |game|
+          game.won == "TRUE"
+        end
+        game_win_percentage.store(team_id, wins.count.to_f / count.to_f)
+      end
+      highest_win_percentage = game_win_percentage.keys.max do |team_id_1, team_id_2|
+        game_win_percentage[team_id_1] <=> game_win_percentage[team_id_2]
+      end
+
+      team_with_highest_win_percentage_across_all_seasons = @team_storage.teams[highest_win_percentage.to_i].teamName
 
       team_with_highest_win_percentage_across_all_seasons
     end
-
-# 	Name of the team with the highest win percentage across all seasons.	String
 
     def highest_scoring_visitor
       score = @games.values.max_by { |game| game.away_goals.to_i}

@@ -16,7 +16,7 @@ class StatTrackerTest < Minitest::Test
     @get_game_info = @stat_tracker.parse_games('./data/sample_game.csv')
     # @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
     @get_game_teams_info = @stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
-    @get_longer_game_info = @stat_tracker.parse_game_teams('./data/longer_sample_game.csv')
+    # @get_longer_game_info = @stat_tracker.parse_game_teams('./data/longer_sample_game.csv')
     @game_1 = mock("game")
     @game_teams_1 = mock("game_teams")
     @team_1 = mock("teams")
@@ -134,8 +134,10 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
     assert_equal "Bruins", stat_tracker.highest_scoring_visitor
+  end
 
   def test_it_can_count_wins_by_season
+    skip
     assert_equal ({"20122013"=>4, "20152016"=>5}), @stat_tracker.wins_by_season(@stat_tracker.games, "3")
   end
 
@@ -163,7 +165,7 @@ class StatTrackerTest < Minitest::Test
     @stat_tracker
     @get_game_info
 
-    assert_equal 0.75, @stat_tracker.percentage_home_wins
+    assert_equal 0.8, @stat_tracker.percentage_home_wins
   end
 
   def test_it_can_calculate_percentage_vistor_wins
@@ -171,7 +173,7 @@ class StatTrackerTest < Minitest::Test
     @stat_tracker
     @get_game_info
 
-    assert_equal 0.25, @stat_tracker.percentage_visitor_wins
+    assert_equal 0.2, @stat_tracker.percentage_visitor_wins
   end
 
   def test_it_can_calculate_season_with_most_games
@@ -182,10 +184,8 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_season_with_fewest_games
-    @stat_tracker
-    @get_game_info
 
-    assert_equal 20132014, @stat_tracker.season_with_fewest_games
+    assert_equal 20122013, @stat_tracker.season_with_fewest_games
   end
 
   def test_it_can_get_count_of_games_by_season
@@ -193,7 +193,7 @@ class StatTrackerTest < Minitest::Test
     @get_game_info
 
     # expected =
-    assert_equal ({20122013 => 3, 20132014 => 1}), @stat_tracker.count_of_games_by_season
+    assert_equal ({20122013 => 5}), @stat_tracker.count_of_games_by_season
   end
 
   # Erin's Iteration 3: League and Season Stats
@@ -201,14 +201,14 @@ class StatTrackerTest < Minitest::Test
     @stat_tracker
     @get_team_info
 
-    assert_equal 1, @stat_tracker.count_of_teams
+    assert_equal 7, @stat_tracker.count_of_teams
   end
 
   def test_it_can_calculate_the_winningest_team
-    @stat_tracker
-    @get_game_teams_info
-  end
     
+    assert_equal "Bruins", @stat_tracker.winningest_team
+  end
+
   def test_it_can_find_lowest_scoring_home_team
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
