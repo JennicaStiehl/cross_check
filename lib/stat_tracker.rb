@@ -107,4 +107,43 @@ class StatTracker
 
 # 	Name of the team with the highest win percentage across all seasons.	String
 
+    def highest_scoring_visitor
+      score = @games.values.max_by { |game| game.away_goals.to_i}
+      get_team_name_from_id(score.away_team_id)
+    end
+
+  def highest_scoring_home_team
+    score = @games.values.max_by { |game| game.home_goals.to_i}
+    get_team_name_from_id(score.home_team_id)
+  end
+
+  def lowest_scoring_visitor
+    score = @games.values.min_by { |game| game.away_goals.to_i}
+    get_team_name_from_id(score.away_team_id)
+  end
+
+  def lowest_scoring_home_team
+    score = @games.values.min_by { |game| game.home_goals.to_i}
+    get_team_name_from_id(score.home_team_id)
+  end
+
+  def highest_total_score
+    sum = @games.values.max_by { |game| game.away_goals.to_i + game.home_goals.to_i }
+    sum.away_goals.to_i + sum.home_goals.to_i
+  end
+
+  def lowest_total_score
+    sum = @games.values.min_by { |game| game.away_goals.to_i + game.home_goals.to_i }
+    sum.away_goals.to_i + sum.home_goals.to_i
+  end
+
+  def head_to_head(team_id, opponent_id)
+    head_to_head = {}
+    t = win_loss(team_id)
+    o = win_loss(opponent_id)
+    head_to_head[t.keys] = t.values.flatten
+    head_to_head[o.keys] = o.values.flatten
+    head_to_head
+  end
+
 end

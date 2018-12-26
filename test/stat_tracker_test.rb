@@ -16,6 +16,7 @@ class StatTrackerTest < Minitest::Test
     @get_game_info = @stat_tracker.parse_games('./data/sample_game.csv')
     # @get_game_season_info = @stat_tracker.parse_games('./data/sample_game_seasons.csv')
     @get_game_teams_info = @stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+    @get_longer_game_info = @stat_tracker.parse_game_teams('./data/longer_sample_game.csv')
     @game_1 = mock("game")
     @game_teams_1 = mock("game_teams")
     @team_1 = mock("teams")
@@ -52,7 +53,7 @@ class StatTrackerTest < Minitest::Test
   #
   #   assert_equal expected, stat_tracker.parse_games('./data/sample_game.csv')
   # end
-  #
+
   # def test_it_works_for_sample_game_team_info_file
   #   skip
   #   stat_tracker = StatTracker.new
@@ -68,29 +69,38 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_biggest_blowout
     skip
+
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
     assert_equal 3, stat_tracker.biggest_blowout
   end
 
-  def test_it_can_search_any_collection_by_id
-    skip
-    assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030166)
+  def test_it_can_calculate_biggest_team_blowout
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    assert_equal 3, stat_tracker.biggest_team_blowout("3")
   end
 
-  def test_it_can_search_any_collection_by_id_2
-    skip
-    assert_equal @game_teams_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.game_teams, 3)
-  end
-
-  def test_it_can_search_any_collection_by_id_3
-    skip
-    assert_equal @team_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.teams, 1)
-  end
+  # def test_it_can_search_any_collection_by_id
+  #   skip
+  #   assert_equal @game_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.games, 2012030166)
+  # end
+  #
+  # def test_it_can_search_any_collection_by_id_2
+  #   skip
+  #   assert_equal @game_teams_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.game_teams, 3)
+  # end
+  #
+  # def test_it_can_search_any_collection_by_id_3
+  #   skip
+  #   assert_equal @team_1, @stat_tracker.search_any_collection_by_id(@stat_tracker.teams, 1)
+  # end
 
   def test_it_can_calculate_best_season
     skip
+
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -99,37 +109,54 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_worst_season
     skip
+
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
     assert_equal "20122013", stat_tracker.worst_season(stat_tracker.games, "3")
   end
 
-  def test_it_can_find_home_team_goals
-    skip
-    stat_tracker = StatTracker.new
-    stat_tracker.parse_teams('./data/sample_game.csv')
-
-    assert_equal 5, stat_tracker.find_home_team_goals_from_games(stat_tracker.games,"3")
-  end
-
-  def test_it_can_count_wins
-    skip
+  def test_it_can_count_wins_by_season
     assert_equal ({"20122013"=>4, "20152016"=>5}), @stat_tracker.wins_by_season(@stat_tracker.games, "3")
   end
 
   def test_it_can_calculate_percentage_wins
-    skip
     stat_tracker = StatTracker.new
     get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
 
-    assert_equal 25, stat_tracker.win_percentage(stat_tracker.games, "3")
+    assert_equal 20.0, stat_tracker.win_percentage(stat_tracker.games, "3")
   end
 
-  def test_it_can_collect_seasons_list
-    skip
-    assert_equal ["20122013", "20122013", "20122013", "20122013"], @stat_tracker.seasons(@stat_tracker.games, "3")
+
+  def test_it_can_find_highest_scoring_visitor
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Bruins", stat_tracker.highest_scoring_visitor
+
+  def test_it_can_count_wins_by_season
+    assert_equal ({"20122013"=>4, "20152016"=>5}), @stat_tracker.wins_by_season(@stat_tracker.games, "3")
   end
+
+
+  def test_it_can_get_team_name_from_id
+
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.get_team_name_from_id("3")
+  end
+
+  def test_it_can_find_highest_scoring_home_team
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Bruins", stat_tracker.highest_scoring_home_team
+  end
+
 
   def test_it_can_calculate_percentage_home_wins
     # skip
@@ -180,8 +207,84 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_calculate_the_winningest_team
     @stat_tracker
     @get_game_teams_info
+  end
+    
+  def test_it_can_find_lowest_scoring_home_team
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
 
-    assert_equal "Maple Leafs", @stat_tracker.winningest_team
+    assert_equal "Rangers", stat_tracker.lowest_scoring_home_team
+  end
+
+
+  def test_it_can_find_lowest_scoring_visitor
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.lowest_scoring_visitor
+  end
+
+  def test_it_can_find_most_goals_in_a_game
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal 7, stat_tracker.highest_total_score
+  end
+
+  def test_it_can_find_least_goals_in_a_game
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal 3, stat_tracker.lowest_total_score
+  end
+
+  def test_it_can_represent_head_to_head
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    expected = ({["Rangers"]=>["1:5"], ["Flyers"]=>["0:0"]})
+    assert_equal expected, stat_tracker.head_to_head("3","4")
+  end
+
+  def test_it_can_count_losses
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    assert_equal 5, stat_tracker.losses("3")
+  end
+
+  def test_it_can_count_wins
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    assert_equal 1, stat_tracker.wins("3")
+  end
+
+
+  def test_for_most_popular_venue
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+    assert_equal "United Center", stat_tracker.most_popular_venue
+  end
+
+  def test_for_least_popular_venue
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+
+    assert_equal "Scotiabank Place", stat_tracker.least_popular_venue
+  end
+
+  def test_for_average_goals_per_game
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+
+    assert_equal 4.98, stat_tracker.avg_goals_per_game
   end
 
 end
