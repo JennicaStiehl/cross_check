@@ -87,6 +87,89 @@ module GameStats
     (wins.to_f / total_games.to_f) * 100
   end
 
+
+  # def find_home_team_goals_from_games(collection = @games, team_id)
+  #   goals = 0
+  #   collection.values.find_all do |game|
+  #     if game.home_team_id == team_id
+  #       goals += game.home_goals.to_i
+  #     end
+  #   end
+  #   goals
+  # end
+  def percentage_home_wins
+    percentage_home_wins = 0
+    total_games_played = 0
+    total_home_games_won = []
+    # find the total games played
+    total_games_played = @game_storage.games.keys.count
+    # find the total home games played and won
+    total_home_games_won = @game_storage.games.values.select do |game|
+      game.outcome.include?("home")
+    end
+    #do the math and return it
+    percentage_home_wins = total_home_games_won.count.to_f / total_games_played.to_f
+
+    return percentage_home_wins
+  end
+
+  def percentage_visitor_wins
+    percentage_visitor_wins = 0
+    total_games_played = 0
+    total_visitor_games_won = []
+    # find the total games played
+    total_games_played = @game_storage.games.keys.count
+    # find the total visitor games played and won
+    total_visitor_games_won = @game_storage.games.values.select do |game|
+      game.outcome.include?("away")
+    end
+    #do the math and return it
+    percentage_visitor_wins = total_visitor_games_won.count.to_f / total_games_played.to_f
+
+    return percentage_visitor_wins
+  end
+
+  def season_with_most_games
+    season_with_most_games = 0
+
+    total_games_by_season = @game_storage.games.values.group_by do |game|
+      game.season
+    end
+
+    season_with_most_games = total_games_by_season.keys.max do |season_1, season_2|
+      total_games_by_season[season_1].count <=> total_games_by_season[season_2].count
+    end
+
+    return season_with_most_games.to_i #two years, 8 digit integer
+  end
+
+  def season_with_fewest_games
+    season_with_fewest_games = 0
+
+    total_games_by_season = @game_storage.games.values.group_by do |game|
+      game.season
+    end
+
+    season_with_fewest_games = total_games_by_season.keys.min do |season_1, season_2|
+      total_games_by_season[season_1].count <=> total_games_by_season[season_2].count
+    end
+
+    return season_with_fewest_games.to_i #two years, 8 digit integer
+  end
+
+  def count_of_games_by_season
+    count_of_games_by_season = {} #{season (integer): number_of_games (integer)}
+
+    total_games_by_season = @game_storage.games.values.group_by do |game|
+      game.season
+    end
+
+    total_games_by_season.keys.each do |season|
+      count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
+    end
+    count_of_games_by_season
+  end
+  
   def get_team_name_from_id(team_id)
     name = ""
     @teams.values.each do |team|
