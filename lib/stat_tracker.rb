@@ -81,42 +81,80 @@ class StatTracker
       @games
     end
     # Erin's Iteration 3: League and Season Stats
-    def count_of_teams
-      total_number_of_teams = 0 #integer
+  def count_of_teams
+    total_number_of_teams = 0 #integer
 
-      total_number_of_teams = @team_storage.teams.count
+    total_number_of_teams = @team_storage.teams.count
 
-      return total_number_of_teams
+    return total_number_of_teams
+  end
+
+  def winningest_team
+    team_with_highest_win_percentage_across_all_seasons = ""
+
+    teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
+      game_team.team_id
     end
 
-    def winningest_team
-      team_with_highest_win_percentage_across_all_seasons = ""
-
-      teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
-        game_team.team_id
+    game_win_percentage = {}
+    teams_by_id.keys.each do |team_id|
+      count = teams_by_id[team_id].count
+      wins = teams_by_id[team_id].select do |game|
+        game.won == "TRUE"
       end
-
-      game_win_percentage = {}
-      teams_by_id.keys.each do |team_id|
-        count = teams_by_id[team_id].count
-        wins = teams_by_id[team_id].select do |game|
-          game.won == "TRUE"
-        end
-        game_win_percentage.store(team_id, wins.count.to_f / count.to_f)
-      end
-      highest_win_percentage = game_win_percentage.keys.max do |team_id_1, team_id_2|
-        game_win_percentage[team_id_1] <=> game_win_percentage[team_id_2]
-      end
-
-      team_with_highest_win_percentage_across_all_seasons = @team_storage.teams[highest_win_percentage.to_i].teamName
-
-      team_with_highest_win_percentage_across_all_seasons
+      game_win_percentage.store(team_id, wins.count.to_f / count.to_f)
+    end
+    highest_win_percentage = game_win_percentage.keys.max do |team_id_1, team_id_2|
+      game_win_percentage[team_id_1] <=> game_win_percentage[team_id_2]
     end
 
-    def highest_scoring_visitor
-      score = @games.values.max_by { |game| game.away_goals.to_i}
-      get_team_name_from_id(score.away_team_id)
+    team_with_highest_win_percentage_across_all_seasons = @team_storage.teams[highest_win_percentage.to_i].teamName
+
+    team_with_highest_win_percentage_across_all_seasons
+  end
+
+  def best_fans
+    biggest_home_away_win_percentage_difference = ""
+
+    teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
+      game_team.team_id
     end
+
+    game_win_percentage = {}
+    teams_by_id.keys.each do |team_id|
+      # teams_by_id[team_id].count
+      home_count = teams_by_id[team_id].select do |game|
+        game.HoA == "home"
+      end
+
+      home_win_count = home_count.select do |game|
+        game.won == "TRUE"
+      end
+
+      away_count = teams_by_id[team_id].select do |game|
+        game.HoA == "away"
+      end
+
+      away_win_count = away_count.select do |game|
+        game.won == "TRUE"
+      end
+
+    game_win_percentage.store(team_id, ((home_win_count.count.to_f / home_count.count.to_f) - (away_win_count.count.to_f / away_count.count.to_f)))
+    end
+
+    highest_win_percentage = game_win_percentage.keys.max do |team_id_1, team_id_2|
+      game_win_percentage[team_id_1] <=> game_win_percentage[team_id_2]
+    end
+    
+    biggest_home_away_win_percentage_difference = @team_storage.teams[highest_win_percentage.to_i].teamName
+
+    biggest_home_away_win_percentage_difference
+  end
+
+  def highest_scoring_visitor
+    score = @games.values.max_by { |game| game.away_goals.to_i}
+    get_team_name_from_id(score.away_team_id)
+  end
 
   def highest_scoring_home_team
     score = @games.values.max_by { |game| game.home_goals.to_i}

@@ -205,7 +205,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_the_winningest_team
-    
+
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
@@ -285,6 +285,11 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
     assert_equal 4.98, stat_tracker.avg_goals_per_game
+  end
+
+  def test_it_can_calculate_best_fans
+
+    assert_equal "Bruins", @stat_tracker.best_fans
   end
 
 end
