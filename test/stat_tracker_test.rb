@@ -296,5 +296,10 @@ class StatTrackerTest < Minitest::Test
 
     assert_equal 4.98, stat_tracker.avg_goals_per_game
   end
+  #Erin's iteration 4
+  def test_it_can_find_most_goals_scored
+
+    assert_equal 6, @stat_tracker.most_goals_scored("6")
+  end
 
 end

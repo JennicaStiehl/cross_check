@@ -222,5 +222,18 @@ class StatTracker
     head_to_head[o.keys] = o.values.flatten
     head_to_head
   end
+#Erin's iteration 4
+  def most_goals_scored(team_id)
+    highest_number_of_goals = 0
 
+    team = @game_team_storage.game_teams.values.select do |game_team|
+      game_team.team_id == team_id
+    end
+
+    highest_number_of_goals = team.max do |team_1, team_2|
+      team_1.goals <=> team_2.goals
+    end
+
+    highest_number_of_goals.goals.to_i
+  end
 end
