@@ -49,6 +49,13 @@ class StatTrackerTest < Minitest::Test
     assert_equal 7, stat_tracker.highest_total_score
   end
 
+  def test_for_highest_score
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+    assert_equal 6, stat_tracker.highest_score
+  end
+
   def test_it_can_calculate_biggest_blowout
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
@@ -125,17 +132,22 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_percentage_vistor_wins
-    @stat_tracker
-    @get_game_info
 
     assert_equal 0.2, @stat_tracker.percentage_visitor_wins
   end
 
   def test_it_can_calculate_season_with_most_games
-    @stat_tracker
-    @get_game_info
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    assert_equal 20122013, @stat_tracker.season_with_most_games
+    assert_equal 20122013, stat_tracker.season_with_most_games
+  end
+
+  def test_it_can_create_hash_by_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    assert_equal 4, stat_tracker.create_hash_by_season.keys.count
   end
 
   def test_it_can_calculate_season_with_fewest_games
@@ -144,8 +156,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_get_count_of_games_by_season
-    @stat_tracker
-    @get_game_info
+
 
     assert_equal ({20122013 => 5}), @stat_tracker.count_of_games_by_season
   end
