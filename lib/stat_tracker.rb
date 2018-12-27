@@ -253,31 +253,26 @@ class StatTracker
 
   def worst_loss(team_id)
     biggest_goal_difference = 0
-    #use game_team_stats
-    #(team_id) = team
-    #search game_id for team_id argument, if "won" == FALSE
-    #subtract winning team (opponent) score from team(team_id)
     lost_games_for_team = @game_team_storage.game_teams.values.select do |game_team|
       game_team.team_id == team_id && game_team.won == "FALSE"
     end
 
-    lost_games_for_team.each do |game_teams|
-      # game_teams.game_id
+    lost_games_for_team.each do |losing_team|
         opponent_for_team = @game_team_storage.game_teams.values.select do |game_team|
-          game_team.team_id != team_id && game_team.game_id == game_teams.game_id
+          game_team.team_id != team_id && game_team.game_id == losing_team.game_id
         end
       if opponent_for_team.count != 0
-        goal_difference = opponent_for_team[0].goals.to_i - game_teams.goals.to_i
+        goal_difference = opponent_for_team[0].goals.to_i - losing_team.goals.to_i
           if goal_difference > biggest_goal_difference
             biggest_goal_difference = goal_difference
           end
       end
     end
-    biggest_goal_difference
+    return biggest_goal_difference
   end
 
-  def average_win_percentage
-    #average_win_percentage	Average of all of the seasons win percentages for a team.	Float
-  end
+  # def average_win_percentage
+  #   #average_win_percentage	Average of all of the seasons win percentages for a team.	Float
+  # end
 
 end
