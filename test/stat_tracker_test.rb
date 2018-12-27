@@ -306,4 +306,14 @@ class StatTrackerTest < Minitest::Test
 
     assert_equal 0, @stat_tracker.fewest_goals_scored("3")
   end
+
+  def test_it_can_calculate_worst_loss
+
+    assert_equal 5, @stat_tracker.worst_loss("3")
+  end
+
+  def test_it_can_calculate_average_win_percentage
+
+    assert_equal 0.5, @stat_tracker.average_win_percentage("3")
+  end
 end
