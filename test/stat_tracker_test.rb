@@ -209,6 +209,16 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
+  def test_it_can_calculate_best_fans
+
+    assert_equal "Bruins", @stat_tracker.best_fans
+  end
+
+  def test_it_can_calculate_worst_fans
+
+    assert_equal [], @stat_tracker.worst_fans
+  end
+
   def test_it_can_find_lowest_scoring_home_team
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
@@ -285,11 +295,6 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
     assert_equal 4.98, stat_tracker.avg_goals_per_game
-  end
-
-  def test_it_can_calculate_best_fans
-
-    assert_equal "Bruins", @stat_tracker.best_fans
   end
 
 end
