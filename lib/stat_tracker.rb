@@ -236,4 +236,20 @@ class StatTracker
 
     highest_number_of_goals.goals.to_i
   end
+
+  def fewest_goals_scored(team_id)
+    lowest_number_of_goals = 0
+
+    team = @game_team_storage.game_teams.values.select do |game_team|
+      game_team.team_id == team_id
+    end
+
+    lowest_number_of_goals = team.min do |team_1, team_2|
+      team_1.goals <=> team_2.goals
+    end
+
+    lowest_number_of_goals.goals.to_i
+  end
+
+
 end
