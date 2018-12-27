@@ -14,9 +14,9 @@ class GameTeamStorageTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
-    assert_equal "2012030222", stat_tracker.game_teams[3].game_id
-    assert_equal "John Tortorella", stat_tracker.game_teams[3].head_coach
-    assert_equal "Claude Julien", stat_tracker.game_teams[6].head_coach
+    assert_equal "2012030222", stat_tracker.game_teams.values[3].game_id
+    assert_equal "Mike Sullivan", stat_tracker.game_teams.values[4].head_coach
+    assert_equal "Claude Julien", stat_tracker.game_teams.values[1].head_coach
   end
 
 end
