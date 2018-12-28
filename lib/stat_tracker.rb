@@ -85,9 +85,18 @@ class StatTracker
       @games
     end
 
+  def average_win_percentage(team_id)
+    count_of_games = @game_team_storage.game_teams.values.select do |game_team|
+      team_id == game_team.team_id
+    end
+    total_games = count_of_games.count
 
-  # def average_win_percentage
-  #   #average_win_percentage	Average of all of the seasons win percentages for a team.	Float
-  # end
+    count_of_wins = @game_team_storage.game_teams.values.select do |game_team|
+      team_id == game_team.team_id && game_team.won == "TRUE"
+    end
+    total_wins = count_of_wins.count
 
+    average_win_percentage = total_wins.to_f / total_games.to_f
+    return average_win_percentage.round(2)
+  end
 end
