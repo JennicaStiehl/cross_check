@@ -309,4 +309,11 @@ class StatTrackerTest < Minitest::Test
   assert_equal ({"3" => 0, "5" => 0, "6" => 0}), stat_tracker.create_hash_of_games_played
   end
 
+  def test_it_can_add_games_to_games_played_by_team_hash
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+    assert_equal ({"3" => 6, "6" => 3, "5" => 4}), stat_tracker.add_games_to_games_played_by_team
+  end
+
 end

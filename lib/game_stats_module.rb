@@ -272,6 +272,14 @@ module GameStats
       games_played_by_team[team_id] = 0
     end
     @games_played_by_team
-  end  
+  end
+
+  def add_games_to_games_played_by_team
+    create_hash_of_games_played
+    @game_teams.values.each do |game|
+      @games_played_by_team[game.team_id] += 1
+    end
+    @games_played_by_team
+  end   
 
 end
