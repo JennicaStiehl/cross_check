@@ -1,18 +1,9 @@
 require 'pry'
-require './lib/game_team'
-require './lib/game_team_storage'
+require './lib/game'
+require './lib/game_storage'
 require './lib/stat_tracker'
 
 module GameStats
-
-  # def search_any_collection_by_id(collection, id)
-  #     collection[id]
-  # end
-
-  def highest_score
-    high = @game_teams.values.max_by { |game| game.goals.to_i }
-    high.goals.to_i
-  end
 
   def biggest_blowout
     blowout = @games.values.max_by do |game|
@@ -169,15 +160,7 @@ module GameStats
     count_of_games_by_season
   end
 
-  def get_team_name_from_id(team_id)
-    name = ""
-    @teams.values.each do |team|
-      if team.teamid == team_id
-      name = team.teamName
-      end
-    end
-    name
-  end
+
 
   def win_loss(team_id)
     h2h = {}
@@ -186,6 +169,15 @@ module GameStats
     t = get_team_name_from_id(team_id)
     h2h[t] = "#{w}:#{l}"
     h2h
+  end
+
+  def head_to_head(team_id, opponent_id)
+    head_to_head = {}
+    t = win_loss(team_id)
+    o = win_loss(opponent_id)
+    head_to_head[t.keys] = t.values.flatten
+    head_to_head[o.keys] = o.values.flatten
+    head_to_head
   end
 
 #needed to set up most/least popular venue
@@ -238,4 +230,58 @@ module GameStats
     average_goals
   end
 
+  def highest_scoring_visitor
+    score = @games.values.max_by { |game| game.away_goals.to_i}
+    get_team_name_from_id(score.away_team_id)
+  end
+
+  def highest_scoring_home_team
+    score = @games.values.max_by { |game| game.home_goals.to_i}
+    get_team_name_from_id(score.home_team_id)
+  end
+
+  def lowest_scoring_visitor
+    score = @games.values.min_by { |game| game.away_goals.to_i}
+    get_team_name_from_id(score.away_team_id)
+  end
+
+  def lowest_scoring_home_team
+    score = @games.values.min_by { |game| game.home_goals.to_i}
+    get_team_name_from_id(score.home_team_id)
+  end
+
+  def highest_total_score
+    sum = @games.values.max_by { |game| game.away_goals.to_i + game.home_goals.to_i }
+    sum.away_goals.to_i + sum.home_goals.to_i
+  end
+
+  def lowest_total_score
+    sum = @games.values.min_by { |game| game.away_goals.to_i + game.home_goals.to_i }
+    sum.away_goals.to_i + sum.home_goals.to_i
+  end
+
+  # def goals_scored
+  #   @games.inject(Hash.new(0)) do |sum, game|
+  #     [game.home_team_id] = game.home_goals
+  #     [game.away_team_id] = game.away_goals
+  #   end
+  # end
+
+  def season_summary(collection = @games, team_id)
+summary = {}
+    # w = win_percentage(collection = @games, team_id)
+    hash_values = @games.values.group_by do |game|
+      if game.home_team_id == team_id
+        binding.pry
+      summary[game.type] = {win_percentage: 1,# if game.outcome.include?("home win"),
+                            goals_scored: game.home_goals.to_i,
+                            goals_against: game.away_goals.to_i
+                            }
+      end
+    end
+    # nc = hash_values.flatten
+    # win_percentage(nc, team_id)
+
+    summary
+  end
 end
