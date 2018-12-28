@@ -290,6 +290,18 @@ module GameStats
       average_team_goals_across_all_seasons[team_id] = (goals / @games_played_by_team[team_id])
     end
     average_team_goals_across_all_seasons
-  end    
+  end
+
+  def best_offense
+    name = ""
+    team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.max)
+    @teams.values.each do |team|
+      # binding.pry
+    if team.teamid == team_id
+      name = team.teamName
+    end
+    end
+    name
+  end   
 
 end
