@@ -288,4 +288,11 @@ class StatTrackerTest < Minitest::Test
   assert_equal ["3", "6", "5"], stat_tracker.sort_teams_by_team_id
   end
 
+  def test_it_can_create_a_team_to_goals_hash
+  stat_tracker = StatTracker.new
+  stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+  assert_equal ({"3" => 0, "6" => 0, "5" => 0}), stat_tracker.create_team_to_goals_hash
+end
+
 end

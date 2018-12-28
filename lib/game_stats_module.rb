@@ -248,6 +248,14 @@ module GameStats
       team_id_array << game.team_id
     end
     team_id_array.uniq
-  end  
+  end
+
+  def create_team_to_goals_hash
+    @team_to_goals_hash = {}
+      sort_teams_by_team_id.each do |team_id|
+        team_to_goals_hash[team_id] = 0
+      end
+    @team_to_goals_hash
+  end
 
 end
