@@ -270,4 +270,31 @@ class StatTrackerTest < Minitest::Test
     skip
     assert_equal 0.5, @stat_tracker.average_win_percentage("3")
   end
+
+  def test_it_can_sum_goals_scored
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/game.csv')
+
+    assert_equal ({}), stat_tracker.goals_scored
+  end
+
+  def test_it_can_summarize_seasons
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/game.csv')
+
+    expected = ({
+      "P"=>{
+        :win_percentage => 0.25,
+        :goals_scored => 0,
+        :goals_against => 10
+      },
+      "R"=>{
+        :win_percentage => 0.25,
+        :goals_scored => 0,
+        :goals_against => 10
+        }})
+    assert_equal expected, stat_tracker.season_summary(collection = @games, "3")
+  end
 end

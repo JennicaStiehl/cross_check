@@ -234,7 +234,6 @@ module GameStats
     average_goals
   end
 
-
   def highest_scoring_visitor
     score = @games.values.max_by { |game| game.away_goals.to_i}
     get_team_name_from_id(score.away_team_id)
@@ -265,4 +264,28 @@ module GameStats
     sum.away_goals.to_i + sum.home_goals.to_i
   end
 
+  # def goals_scored
+  #   @games.inject(Hash.new(0)) do |sum, game|
+  #     [game.home_team_id] = game.home_goals
+  #     [game.away_team_id] = game.away_goals
+  #   end
+  # end
+
+  def season_summary(collection = @games, team_id)
+summary = {}
+    # w = win_percentage(collection = @games, team_id)
+    hash_values = @games.values.group_by do |game|
+      if game.home_team_id == team_id
+        binding.pry
+      summary[game.type] = {win_percentage: 1,# if game.outcome.include?("home win"),
+                            goals_scored: game.home_goals.to_i,
+                            goals_against: game.away_goals.to_i
+                            }
+      end
+    end
+    # nc = hash_values.flatten
+    # win_percentage(nc, team_id)
+
+    summary
+  end
 end
