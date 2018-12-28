@@ -280,6 +280,16 @@ module GameStats
       @games_played_by_team[game.team_id] += 1
     end
     @games_played_by_team
-  end   
+  end
+
+  def average_team_goals_across_all_seasons
+    add_goals_to_team_to_goals_hash
+    add_games_to_games_played_by_team
+    average_team_goals_across_all_seasons = {}
+    @team_to_goals_hash.each do |team_id, goals|
+      average_team_goals_across_all_seasons[team_id] = (goals / @games_played_by_team[team_id])
+    end
+    average_team_goals_across_all_seasons
+  end    
 
 end
