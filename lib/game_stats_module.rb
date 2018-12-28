@@ -266,4 +266,12 @@ module GameStats
     @team_to_goals_hash
   end
 
+  def create_hash_of_games_played
+    @games_played_by_team = {}
+    sort_teams_by_team_id.each do |team_id|
+      games_played_by_team[team_id] = 0
+    end
+    @games_played_by_team
+  end  
+
 end
