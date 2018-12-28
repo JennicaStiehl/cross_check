@@ -1,6 +1,9 @@
 require './lib/storage'
+require './lib/stat_tracker'
+require './lib/team_storage'
 
-class GameStorage #< Storage
+class GameStorage
+
   attr_accessor   :games,
                   :game_storage
 
@@ -12,6 +15,5 @@ class GameStorage #< Storage
     @games[game.game_id.to_i] = game
     @games
   end
-
 
 end

@@ -21,12 +21,10 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_exists
-
     assert_instance_of StatTracker, @stat_tracker
   end
 
   def test_it_works_for_sample_team_info_file
-
     assert_equal "NJD", @stat_tracker.teams[1].abbreviation
   end
 
@@ -38,7 +36,6 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_works_for_sample_game_team_info
-
     assert_equal "away", @stat_tracker.game_teams.values[2].HoA
   end
 
@@ -107,7 +104,6 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_get_team_name_from_id
-
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -132,7 +128,6 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_percentage_vistor_wins
-
     assert_equal 0.2, @stat_tracker.percentage_visitor_wins
   end
 
@@ -156,8 +151,6 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_get_count_of_games_by_season
-
-
     assert_equal ({20122013 => 5}), @stat_tracker.count_of_games_by_season
   end
 
@@ -169,17 +162,14 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_the_winningest_team
-
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
   def test_it_can_calculate_best_fans
-
     assert_equal "Bruins", @stat_tracker.best_fans
   end
 
   def test_it_can_calculate_worst_fans
-
     assert_equal [], @stat_tracker.worst_fans
   end
 
