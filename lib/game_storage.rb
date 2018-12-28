@@ -12,6 +12,5 @@ class GameStorage #< Storage
     @games[game.game_id.to_i] = game
     @games
   end
-
-
+  
 end
