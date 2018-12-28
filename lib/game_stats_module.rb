@@ -107,7 +107,7 @@ module GameStats
     total_home_games_won = @game_storage.games.values.select do |game|
       game.outcome.include?("home")
     end
-    #do the math and return it
+
     percentage_home_wins = total_home_games_won.count.to_f / total_games_played.to_f
 
     return percentage_home_wins
@@ -149,19 +149,15 @@ module GameStats
   def season_with_fewest_games
     season_with_fewest_games = 0
 
-    total_games_by_season = @game_storage.games.values.group_by do |game|
-      game.season
+    season_with_fewest_games = create_hash_by_season.keys.min do |season_1, season_2|
+      create_hash_by_season[season_1].count <=> create_hash_by_season[season_2].count
     end
 
-    season_with_fewest_games = total_games_by_season.keys.min do |season_1, season_2|
-      total_games_by_season[season_1].count <=> total_games_by_season[season_2].count
-    end
-
-    return season_with_fewest_games.to_i #two years, 8 digit integer
+    return season_with_fewest_games.to_i
   end
 
   def count_of_games_by_season
-    count_of_games_by_season = {} #{season (integer): number_of_games (integer)}
+    count_of_games_by_season = {}
 
     total_games_by_season = @game_storage.games.values.group_by do |game|
       game.season

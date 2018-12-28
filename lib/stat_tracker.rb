@@ -80,7 +80,7 @@ class StatTracker
       end
       @games
     end
-    # Erin's Iteration 3: League and Season Stats
+
   def count_of_teams
     total_number_of_teams = 0 #integer
 
@@ -151,7 +151,7 @@ class StatTracker
   end
 
   def worst_fans
-    better_away_than_home_records = [] #["Team 1", "Team 2"]
+    better_away_than_home_records = []
 
     teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
       game_team.team_id
@@ -175,9 +175,8 @@ class StatTracker
         game.won == "TRUE"
       end
 
-      game_away_win_percentage.store(team_id, ((away_win_count.count.to_f / away_count.count.to_f) - (home_win_count.count.to_f / home_count.count.to_f)))
-
-      if game_away_win_percentage[team_id] < 0.0
+      if ((away_win_count.count.to_f - home_win_count.count.to_f) / (away_count.count.to_f + home_count.count.to_f)) > 0
+        #all teams have home advantage. So no teams lose more at home than away.
         better_away_than_home_records << @team_storage.teams[team_id.to_i].teamName
       end
     end
@@ -222,7 +221,7 @@ class StatTracker
     head_to_head[o.keys] = o.values.flatten
     head_to_head
   end
-#Erin's iteration 4
+
   def most_goals_scored(team_id)
     highest_number_of_goals = 0
 
