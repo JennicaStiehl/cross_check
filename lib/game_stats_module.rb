@@ -258,4 +258,12 @@ module GameStats
     @team_to_goals_hash
   end
 
+  def add_goals_to_team_to_goals_hash
+    create_team_to_goals_hash
+    @game_teams.values.each do |game|
+      @team_to_goals_hash[game.team_id] += game.goals.to_i
+    end
+    @team_to_goals_hash
+  end
+
 end
