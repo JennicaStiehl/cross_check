@@ -303,4 +303,63 @@ class StatTrackerTest < Minitest::Test
         }})
     assert_equal expected, stat_tracker.season_summary(collection = @games, "3")
   end
+
+  def test_it_can_sort_teams_by_team_id
+  stat_tracker = StatTracker.new
+  stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+  assert_equal ["3", "6", "5"], stat_tracker.sort_teams_by_team_id
+  end
+
+  def test_it_can_create_a_team_to_goals_hash
+  stat_tracker = StatTracker.new
+  stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+  assert_equal ({"3" => 0, "6" => 0, "5" => 0}), stat_tracker.create_team_to_goals_hash
+  end
+
+  def test_it_can_add_goals_to_team_to_goals_hash
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+    assert_equal ({"3" => 12, "6" => 14, "5" => 15}), stat_tracker.add_goals_to_team_to_goals_hash
+  end
+
+  def test_it_can_create_a_hash_of_number_of_games_played
+  stat_tracker = StatTracker.new
+  stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+  assert_equal ({"3" => 0, "5" => 0, "6" => 0}), stat_tracker.create_hash_of_games_played
+  end
+
+  def test_it_can_add_games_to_games_played_by_team_hash
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+    assert_equal ({"3" => 6, "6" => 3, "5" => 4}), stat_tracker.add_games_to_games_played_by_team
+  end
+
+  def test_it_can_average_team_goals_across_all_seasons
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+    assert_equal ({"3" => 2, "6" => 4, "5" => 3}), stat_tracker.average_team_goals_across_all_seasons
+  end
+
+  def test_it_can_calculate_best_offense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
+
+    assert_equal "Bruins", stat_tracker.best_offense
+  end
+
+  def test_it_can_calculate_worst_offense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.worst_offense
+  end
+
 end

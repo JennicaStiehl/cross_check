@@ -16,6 +16,9 @@ class StatTracker
   include TeamStats
   include GameTeamStats
 
+  attr_reader :team_to_goals_hash,
+              :games_played_by_team
+
   attr_accessor :teams,
                 :games,
                 :game_teams,
