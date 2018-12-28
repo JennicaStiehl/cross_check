@@ -280,4 +280,12 @@ class StatTrackerTest < Minitest::Test
     skip
     assert_equal 0.5, @stat_tracker.average_win_percentage("3")
   end
+
+  def test_it_can_sort_teams_by_team_id
+  stat_tracker = StatTracker.new
+  stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+
+  assert_equal ["3", "6", "5"], stat_tracker.sort_teams_by_team_id
+  end
+
 end

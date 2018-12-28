@@ -242,4 +242,12 @@ module GameStats
     average_goals
   end
 
+  def sort_teams_by_team_id
+    team_id_array =[]
+    @game_teams.values.each do |game|
+      team_id_array << game.team_id
+    end
+    team_id_array.uniq
+  end  
+
 end
