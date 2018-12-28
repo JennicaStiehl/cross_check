@@ -331,4 +331,12 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Bruins", stat_tracker.best_offense
   end
 
+  def test_it_can_calculate_worst_offense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
+
+    assert_equal "Rangers", stat_tracker.worst_offense
+  end
+
 end

@@ -302,6 +302,18 @@ module GameStats
     end
     end
     name
-  end   
+  end
+
+  def worst_offense
+    name = ""
+    team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.min)
+    @teams.values.each do |team|
+      # binding.pry
+    if team.teamid == team_id
+      name = team.teamName
+    end
+    end
+    name
+  end
 
 end
