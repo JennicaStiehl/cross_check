@@ -362,4 +362,18 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Rangers", stat_tracker.worst_offense
   end
 
+  def test_for_average_goals_per_game_per_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+
+    assert_equal ({"20122013" => 249}), stat_tracker.average_goals_per_game_per_season
+  end
+
+  def test_for_average_goals_by_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+
+    assert_equal ({20122013 => 4}), stat_tracker.average_goals_by_season
+  end
+
 end

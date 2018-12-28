@@ -358,4 +358,24 @@ summary = {}
 
     summary
   end
+
+  def average_goals_per_game_per_season
+    average_goals_per_game_per_season = {}
+    @games.values.each do |game|
+      average_goals_per_game_per_season[game.season] = 0
+    end
+    @games.values.each do |game|
+      average_goals_per_game_per_season[game.season] += game.home_goals.to_i + game.away_goals.to_i
+    end
+    average_goals_per_game_per_season
+  end
+
+  def average_goals_by_season
+    average_goals_by_season = {}
+    count_of_games_by_season.each do |season, count|
+      average_goals_by_season[season] = (average_goals_per_game_per_season[season.to_s] / count)
+    end
+    average_goals_by_season
+  end
+
 end
