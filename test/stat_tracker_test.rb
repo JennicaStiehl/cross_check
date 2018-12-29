@@ -162,19 +162,47 @@ class StatTrackerTest < Minitest::Test
     assert_equal 7, @stat_tracker.count_of_teams
   end
 
+  def test_it_can_group_game_teams_by_team_id
+
+    assert_equal 3, @stat_tracker.group_game_teams_by_team_id.keys.count
+    #count number of team_ids
+    assert_equal 6, @stat_tracker.group_game_teams_by_team_id["3"].count
+    #count number of game_team objects associated with team_id "3"
+  end
+
+  def test_it_calculates_game_win_percentage
+
+    assert_equal ({"3"=>0.16666666666666666, "6"=>1.0, "5"=>0.75}), @stat_tracker.game_win_percentage
+  end
+
   def test_it_can_calculate_the_winningest_team
+
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
+  def test_home_game_count
+    skip
+  end
+  def test_home_game_win_count
+  skip
+  end
+  def away_game_count
+    skip
+  end
+  def test_away_game_win_count
+    skip
+  end
+
   def test_it_can_calculate_best_fans
+
     assert_equal "Bruins", @stat_tracker.best_fans
   end
 
   def test_it_can_calculate_worst_fans
     stat_tracker = StatTracker.new
-    stat_tracker.parse_game_teams('./data/longer_sample_game_teams_stats.csv')
-    stat_tracker.parse_games('./data/game.csv')
-    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_game_teams('./data/worst_fans_sample_game_teams_stats.csv')
+    stat_tracker.parse_games('./data/worst_fans_sample_game.csv')
+    stat_tracker.parse_teams('./data/worst_fans_sample_team_info.csv')
 
     assert_equal ["Rangers", "Bruins"], stat_tracker.worst_fans
   end
