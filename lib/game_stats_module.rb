@@ -271,45 +271,62 @@ module GameStats
     end
   end
 
-  def goals_scored
+  def goals_scored(team_id = "3")
+    summary = {}
     @games.values.inject(Hash.new(0)) do |goals_by_team, game|
-      goals_by_team[game.home_team_id.to_i] += game.home_goals.to_i
-      goals_by_team[game.away_team_id.to_i] += game.away_goals.to_i
-      goals_by_team
-    end
-  end
-
-  def goals_against
-    @games.values.inject(Hash.new(0)) do |goals_by_team, game|
-      goals_by_team[game.home_team_id.to_i] += game.away_goals.to_i
-      goals_by_team[game.away_team_id.to_i] += game.home_goals.to_i
-      goals_by_team
-    end
-  end
-
-  def total_wins
-    @games.values.inject(Hash.new(0)) do |wins, game|
-      wins[game.home_team_id.to_i] += 1 if game.outcome.include?("home win")
-      wins[game.away_team_id.to_i] += 1 if game.outcome.include?("away win")
-      wins
-    end
-  end
-
-  def season_summary(collection = @games, team_id)
-summary = {}
-    # w = win_percentage(collection = @games, team_id)
-    hash_values = @games.values.group_by do |game|
-      if game.home_team_id == team_id
-        binding.pry
-      summary[game.type] = {win_percentage: 1,# if game.outcome.include?("home win"),
-                            goals_scored: game.home_goals.to_i,
-                            goals_against: game.away_goals.to_i
-                            }
+      if game.home_team_id == team_id || game.away_team_id == team_id
+        goals_by_team[game.home_team_id.to_i] += game.home_goals.to_i
+        goals_by_team[game.away_team_id.to_i] += game.away_goals.to_i
       end
+      summary[game.type] = goals_by_team
     end
-    # nc = hash_values.flatten
-    # win_percentage(nc, team_id)
-
     summary
   end
+
+  def goals_against(team_id = "3")
+    summary = {}
+    @games.values.inject(Hash.new(0)) do |goals_by_team, game|
+      if game.home_team_id == team_id || game.away_team_id == team_id
+      goals_by_team[game.home_team_id.to_i] += game.away_goals.to_i
+      goals_by_team[game.away_team_id.to_i] += game.home_goals.to_i
+      end
+    summary[game.type] = goals_by_team
+    end
+    summary
+  end
+
+  def total_wins(team_id = "3")
+    summary = {}
+    @games.values.inject(Hash.new(0)) do |wins, game|
+      if game.home_team_id == team_id || game.away_team_id == team_id
+      wins[game.home_team_id.to_i] += 1 if game.outcome.include?("home win")
+      wins[game.away_team_id.to_i] += 1 if game.outcome.include?("away win")
+      end
+      summary[game.type] = wins
+    end
+    summary
+  end
+
+  def total_game_count(team_id = "3")
+    summary = {}
+    @games.values.inject(Hash.new(0)) do |total, game|
+      if game.home_team_id == team_id || game.away_team_id == team_id
+        total[game.home_team_id.to_i] += 1
+        total[game.away_team_id.to_i] += 1
+    end
+    summary[game.type] = total
+    end
+    summary
+  end
+
+  def season_summary(collection = @games, team_id = "3")
+    summary = {}
+    @games.values.group_by do |game|
+      summary[game.type] = {win_percentage: 0,#total_wins(team_id) / total_game_count(team_id),
+                            goals_scored: 0,#goals_scored(team_id),
+                            goals_against: 0#goals_against(team_id)
+                            }
+    end
+  end
+
 end

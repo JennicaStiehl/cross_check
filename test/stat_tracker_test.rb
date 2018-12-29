@@ -282,7 +282,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
-    expected = ({6=>16, 3=>10})
+    expected = ({"P"=>{6=>16, 3=>10}})
     assert_equal expected, stat_tracker.goals_scored
   end
 
@@ -291,7 +291,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
-    expected = ({6=>10, 3=>16})
+    expected = ({"P"=>{6=>10, 3=>16}})
     assert_equal expected, stat_tracker.goals_against
   end
 
@@ -299,8 +299,16 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
-    expected = ({6=>4, 3=>1})
+    expected = ({"P"=>{6=>4, 3=>1}})
     assert_equal expected, stat_tracker.total_wins
+  end
+
+  def test_it_can_count_games
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    expected = ({"P"=>{6=>5, 3=>5}})
+    assert_equal expected, stat_tracker.total_game_count
   end
 
   def test_it_can_summarize_seasons
