@@ -5,14 +5,14 @@ require './lib/stat_tracker'
 
 module GameStats
 
-  def biggest_blowout
+  def biggest_blowout#win; maybe game_team & use win/lose column
     blowout = @games.values.max_by do |game|
       (game.away_goals.to_i - game.home_goals.to_i).abs
     end
     (blowout.away_goals.to_i - blowout.home_goals.to_i).abs
   end
 
-  def biggest_team_blowout(team_id)
+  def biggest_team_blowout(team_id)#win
     blowout = @games.values.max_by do |game|
       if game.home_team_id == team_id || game.away_team_id == team_id
         (game.away_goals.to_i - game.home_goals.to_i).abs
@@ -22,7 +22,7 @@ module GameStats
   end
 
   def best_season(collection = @games, team_id)
-    wins = wins_by_season(collection = @games, team_id)
+    wins = wins_by_season(collection, team_id)
     best = wins.max_by do |season, num_wins|
       num_wins
     end
@@ -31,7 +31,7 @@ module GameStats
   end
 
   def worst_season(collection = @games, team_id)
-    wins = wins_by_season(collection = @games, team_id)
+    wins = wins_by_season(collection, team_id)
     worst = wins.min_by do |season, num_wins|
       num_wins
     end
@@ -230,80 +230,6 @@ module GameStats
     average_goals
   end
 
-  def sort_teams_by_team_id
-    team_id_array =[]
-    @game_teams.values.each do |game|
-      team_id_array << game.team_id
-    end
-    team_id_array.uniq
-  end
-
-  def create_team_to_goals_hash
-    @team_to_goals_hash = {}
-      sort_teams_by_team_id.each do |team_id|
-        team_to_goals_hash[team_id] = 0
-      end
-    @team_to_goals_hash
-  end
-
-  def add_goals_to_team_to_goals_hash
-    create_team_to_goals_hash
-    @game_teams.values.each do |game|
-      @team_to_goals_hash[game.team_id] += game.goals.to_i
-    end
-    @team_to_goals_hash
-  end
-
-  def create_hash_of_games_played
-    @games_played_by_team = {}
-    sort_teams_by_team_id.each do |team_id|
-      games_played_by_team[team_id] = 0
-    end
-    @games_played_by_team
-  end
-
-  def add_games_to_games_played_by_team
-    create_hash_of_games_played
-    @game_teams.values.each do |game|
-      @games_played_by_team[game.team_id] += 1
-    end
-    @games_played_by_team
-  end
-
-  def average_team_goals_across_all_seasons
-    add_goals_to_team_to_goals_hash
-    add_games_to_games_played_by_team
-    average_team_goals_across_all_seasons = {}
-    @team_to_goals_hash.each do |team_id, goals|
-      average_team_goals_across_all_seasons[team_id] = (goals / @games_played_by_team[team_id])
-    end
-    average_team_goals_across_all_seasons
-  end
-
-  def best_offense
-    name = ""
-    team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.max)
-    @teams.values.each do |team|
-      # binding.pry
-    if team.teamid == team_id
-      name = team.teamName
-    end
-    end
-    name
-  end
-
-  def worst_offense
-    name = ""
-    team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.min)
-    @teams.values.each do |team|
-      # binding.pry
-    if team.teamid == team_id
-      name = team.teamName
-    end
-    end
-    name
-  end
-
   def highest_scoring_visitor
     score = @games.values.max_by { |game| game.away_goals.to_i}
     get_team_name_from_id(score.away_team_id)
@@ -334,12 +260,40 @@ module GameStats
     sum.away_goals.to_i + sum.home_goals.to_i
   end
 
-  # def goals_scored
-  #   @games.inject(Hash.new(0)) do |sum, game|
-  #     [game.home_team_id] = game.home_goals
-  #     [game.away_team_id] = game.away_goals
-  #   end
-  # end
+  def group_by_team_id
+    @game_teams.values.group_by { |game| game.team_id }
+  end
+
+  def goals_scored_from_game_teams
+    @game_teams.values.inject(Hash.new(0)) do |goals_by_team, game|
+      goals_by_team[game.team_id.to_i] += game.goals.to_i
+      goals_by_team
+    end
+  end
+
+  def goals_scored
+    @games.values.inject(Hash.new(0)) do |goals_by_team, game|
+      goals_by_team[game.home_team_id.to_i] += game.home_goals.to_i
+      goals_by_team[game.away_team_id.to_i] += game.away_goals.to_i
+      goals_by_team
+    end
+  end
+
+  def goals_against
+    @games.values.inject(Hash.new(0)) do |goals_by_team, game|
+      goals_by_team[game.home_team_id.to_i] += game.away_goals.to_i
+      goals_by_team[game.away_team_id.to_i] += game.home_goals.to_i
+      goals_by_team
+    end
+  end
+
+  def total_wins
+    @games.values.inject(Hash.new(0)) do |wins, game|
+      wins[game.home_team_id.to_i] += 1 if game.outcome.include?("home win")
+      wins[game.away_team_id.to_i] += 1 if game.outcome.include?("away win")
+      wins
+    end
+  end
 
   def season_summary(collection = @games, team_id)
 summary = {}

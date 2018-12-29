@@ -171,6 +171,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_worst_fans
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/longer_sample_game_teams_stats.csv')
     stat_tracker.parse_games('./data/game.csv')
@@ -278,11 +279,28 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_sum_goals_scored
-    skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_games('./data/sample_game.csv')
 
-    assert_equal ({}), stat_tracker.goals_scored
+    expected = ({6=>16, 3=>10})
+    assert_equal expected, stat_tracker.goals_scored
+  end
+
+
+  def test_it_can_sum_goals_against
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    expected = ({6=>10, 3=>16})
+    assert_equal expected, stat_tracker.goals_against
+  end
+
+  def test_it_can_sum_wins
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+
+    expected = ({6=>4, 3=>1})
+    assert_equal expected, stat_tracker.total_wins
   end
 
   def test_it_can_summarize_seasons
