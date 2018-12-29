@@ -376,4 +376,12 @@ class StatTrackerTest < Minitest::Test
     assert_equal ({20122013 => 4}), stat_tracker.average_goals_by_season
   end
 
+  def test_for_best_defense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_game_teams('./data/game_teams_stats.csv')
+
+    assert_equal "Golden Knights", stat_tracker.best_defense
+  end
+
 end

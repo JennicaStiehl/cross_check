@@ -14,5 +14,5 @@ module TeamStats
   def count_of_teams
     total_number_of_teams = @team_storage.teams.count
   end
- 
+
 end
