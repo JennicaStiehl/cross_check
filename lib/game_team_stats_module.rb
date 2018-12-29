@@ -185,8 +185,38 @@ module GameTeamStats
        end
      end
      best_defense_team
+  end
 
-
+  def worst_defense
+    gameteamshash = {}
+    gameteamsvariable = @game_teams.group_by do |game_id, game|
+      game.game_id
+    end
+    # binding.pry
+    gameteamsvariable.each do |game_id, games|
+      # binding.pry
+      gameteamshash[games[0][1].team_id] = 0
+      gameteamshash[games[1][1].team_id] = 0
+    end
+    # binding.pry
+    gameteamsvariable.each do |game_id, games|
+      # binding.pry
+      gameteamshash[games[0][1].team_id] += games[1][1].goals.to_i
+    end
+    # binding.pry
+     maximum = gameteamshash.values.max
+     # binding.pry
+     maximum_team_id = gameteamshash.key(maximum).to_i
+     # binding.pry
+     worst_defense_team = ""
+     # binding.pry
+     @teams.values.each do |team|
+       if team.teamid == maximum_team_id.to_s
+         # binding.pry
+         worst_defense_team = team.teamName
+       end
+     end
+     worst_defense_team
   end
 
 end

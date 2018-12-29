@@ -384,4 +384,12 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Golden Knights", stat_tracker.best_defense
   end
 
+  def test_for_worst_defense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_game_teams('./data/game_teams_stats.csv')
+
+    assert_equal "Penguins", stat_tracker.worst_defense
+  end
+
 end
