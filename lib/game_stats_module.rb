@@ -271,62 +271,85 @@ module GameStats
     end
   end
 
-  def goals_scored(team_id = "3")
-    summary = {}
-    @games.values.inject(Hash.new(0)) do |goals_by_team, game|
-      if game.home_team_id == team_id || game.away_team_id == team_id
-        goals_by_team[game.home_team_id.to_i] += game.home_goals.to_i
-        goals_by_team[game.away_team_id.to_i] += game.away_goals.to_i
+  def all_seasons
+    @games.values.map do |game|
+      game.season
+    end.uniq
+  end
+
+  def goals_scored(team_id = "3", the_season = all_seasons)
+    @games.values.inject(0) do |goals_scored, game|
+      if game.home_team_id == team_id && game.season == the_season
+        goals_scored += game.home_goals.to_i
+      elsif game.away_team_id == team_id && game.season == the_season
+        goals_scored += game.away_goals.to_i
+      else
+        goals_scored
       end
-      summary[game.type] = goals_by_team
     end
-    summary
   end
 
-  def goals_against(team_id = "3")
-    summary = {}
-    @games.values.inject(Hash.new(0)) do |goals_by_team, game|
-      if game.home_team_id == team_id || game.away_team_id == team_id
-      goals_by_team[game.home_team_id.to_i] += game.away_goals.to_i
-      goals_by_team[game.away_team_id.to_i] += game.home_goals.to_i
+  def goals_against(team_id = "3", the_season = all_seasons)
+    @games.values.inject(0) do |goals_against, game|
+      if game.home_team_id == team_id && game.season == the_season
+        goals_against += game.away_goals.to_i
+      elsif game.away_team_id == team_id && game.season == the_season
+        goals_against += game.home_goals.to_i
+      else
+        goals_against
       end
-    summary[game.type] = goals_by_team
     end
-    summary
   end
 
-  def total_wins(team_id = "3")
-    summary = {}
-    @games.values.inject(Hash.new(0)) do |wins, game|
-      if game.home_team_id == team_id || game.away_team_id == team_id
-      wins[game.home_team_id.to_i] += 1 if game.outcome.include?("home win")
-      wins[game.away_team_id.to_i] += 1 if game.outcome.include?("away win")
+  def total_wins(team_id = "3", the_season = all_seasons)
+    @games.values.inject(0) do |wins, game|
+      if game.home_team_id == team_id && game.outcome.include?("home win") && the_season.include?(game.season)
+        wins += 1
+      elsif game.away_team_id == team_id && game.outcome.include?("away win") && the_season.include?(game.season)
+        wins += 1
+      else
+        wins
       end
-      summary[game.type] = wins
     end
-    summary
   end
 
-  def total_game_count(team_id = "3")
-    summary = {}
-    @games.values.inject(Hash.new(0)) do |total, game|
-      if game.home_team_id == team_id || game.away_team_id == team_id
-        total[game.home_team_id.to_i] += 1
-        total[game.away_team_id.to_i] += 1
+  def total_game_count(team_id = "3", the_season = all_seasons)
+    @games.values.inject(0) do |total, game|
+      if game.home_team_id == team_id && the_season.include?(game.season)
+        total += 1
+      elsif game.away_team_id == team_id && the_season.include?(game.season)
+        total += 1
+      end
+      total
     end
-    summary[game.type] = total
-    end
-    summary
   end
 
-  def season_summary(collection = @games, team_id = "3")
-    summary = {}
-    @games.values.group_by do |game|
-      summary[game.type] = {win_percentage: 0,#total_wins(team_id) / total_game_count(team_id),
-                            goals_scored: 0,#goals_scored(team_id),
-                            goals_against: 0#goals_against(team_id)
+  def win_percentage_helper(team_id = "3", the_season = all_seasons)
+    if total_game_count(team_id, the_season) > 0
+      (total_wins(team_id, the_season).to_f / total_game_count(team_id, the_season)).round(2)
+    else
+      0.0
+    end
+  end
+
+  def season_summary(team_id = "3", the_season = all_seasons)
+#season_summary	A hash with two keys
+#(:preseason, and :regular_season) each pointing to a hash with the keys
+#:win_percentage, :goals_scored, and :goals_against
+summary = {}
+seasons = []
+seasons << the_season
+s = seasons.flatten.sort
+s.each do |season|
+    @games.values.inject(Hash.new(0)) do |stats, game|
+        stats[game.type] = {win_percentage: win_percentage_helper(team_id = "3", season),
+                            goals_scored: goals_scored(team_id, season),
+                            goals_against: goals_against(team_id, season)
                             }
+        summary[season] = stats
+      end
     end
+    summary
   end
 
 end
