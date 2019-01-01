@@ -171,6 +171,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_worst_fans
+    skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/longer_sample_game_teams_stats.csv')
     stat_tracker.parse_games('./data/game.csv')
@@ -278,30 +279,82 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_sum_goals_scored
-    skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    assert_equal ({}), stat_tracker.goals_scored
+    expected = 16
+    assert_equal expected, stat_tracker.goals_scored("3","20122013")
+  end
+
+
+  def test_it_can_sum_goals_against
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = 12
+    assert_equal expected, stat_tracker.goals_against("3","20122013")
+  end
+
+  def test_it_can_sum_wins
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = 4#({"P"=>{6=>4, 3=>1}})
+    assert_equal expected, stat_tracker.total_wins("3","20122013")
+  end
+
+  def test_it_can_count_games
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = 7
+    assert_equal expected, stat_tracker.total_game_count("3","20122013")
   end
 
   def test_it_can_summarize_seasons
-    skip
+    # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    expected = ({
-      "P"=>{
-        :win_percentage => 0.25,
-        :goals_scored => 0,
-        :goals_against => 10
-      },
-      "R"=>{
-        :win_percentage => 0.25,
-        :goals_scored => 0,
-        :goals_against => 10
-        }})
-    assert_equal expected, stat_tracker.season_summary(collection = @games, "3")
+    expected = ({"20122013"=>
+                  {"P"=>{
+                    :win_percentage=>0.57,
+                    :goals_scored=>16,
+                    :goals_against=>12}}})
+    assert_equal expected, stat_tracker.season_summary("3","20122013")
+  end
+
+  def test_it_can_give_a_seasonal_summary
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = ({"20122013"=>{"P"=>
+      {:win_percentage=>0.57,
+        :goals_scored=>16,
+        :goals_against=>12}},
+        "20142015"=>{"P"=>
+          {:win_percentage=>0.0,
+            :goals_scored=>0,
+            :goals_against=>0}},
+            "20152016"=>{"P"=>
+              {:win_percentage=>0.25,
+                :goals_scored=>7,
+                :goals_against=>15}},
+                "20162017"=>{"P"=>
+                  {:win_percentage=>0.0,
+                    :goals_scored=>0,
+                    :goals_against=>0}}}
+                    )
+    assert_equal expected, stat_tracker.seasonal_summary("3")
+  end
+
+  def test_it_can_list_seasons
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = ["20122013", "20162017", "20142015", "20152016"]
+    assert_equal expected, stat_tracker.all_seasons
   end
 
   def test_it_can_sort_teams_by_team_id
