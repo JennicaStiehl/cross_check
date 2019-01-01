@@ -121,8 +121,6 @@ class StatTrackerTest < Minitest::Test
 
 
   def test_it_can_calculate_percentage_home_wins
-    @stat_tracker
-    @get_game_info
 
     assert_equal 0.8, @stat_tracker.percentage_home_wins
   end
@@ -181,16 +179,31 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_home_game_count
-    skip
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 2, @stat_tracker.home_game_count(teams_grouped_by_team_id, "3")
   end
+
   def test_home_game_win_count
-  skip
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 0, @stat_tracker.home_game_win_count(teams_grouped_by_team_id, "3")
   end
+
   def away_game_count
-    skip
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 4, @stat_tracker.away_game_count(teams_grouped_by_team_id, "3")
   end
+
   def test_away_game_win_count
-    skip
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 1, @stat_tracker.away_game_win_count(teams_grouped_by_team_id, "3")
   end
 
   def test_it_can_calculate_best_fans

@@ -84,7 +84,7 @@ module GameTeamStats
     end
     @teams[highest_win_percentage.to_i].teamName
   end
-  
+
   def worst_fans
     better_away_than_home_records = []
 
@@ -119,7 +119,6 @@ module GameTeamStats
     better_away_than_home_records
   end
 
-  #Erin's iteration 4
   def most_goals_scored(team_id)
     highest_number_of_goals = 0
 
