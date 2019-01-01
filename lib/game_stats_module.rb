@@ -378,4 +378,33 @@ summary = {}
     average_goals_by_season
   end
 
+  def preseason_game_hash(season, collection = @games)
+    preseason_game_hash = collection
+    array_of_preseason_games = []
+    collection.values.each do |game|
+      if game.type == "P" && game.season == season
+        array_of_preseason_games << game
+      end
+    end
+    preseason_game_hash.values.each do |game|
+      if array_of_preseason_games.include?(game) == false
+        preseason_game_hash.delete(preseason_game_hash.key(game))
+      end
+    end
+    preseason_game_hash
+  end
+
+  def regular_season_game_hash(season, collection = @games)
+    regular_season_game_hash = collection
+    regular_season_game_hash.delete_if do |game_id, game|
+      # binding.pry
+      game.type == "P" || game.season != season
+    end
+    regular_season_game_hash
+  end
+
+  def biggest_bust(season)
+    preseason_game_hash(season)
+  end
+
 end

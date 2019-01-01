@@ -155,32 +155,37 @@ module GameTeamStats
     return biggest_goal_difference
   end
 
-  def best_defense
-    gameteamshash = {}
-    gameteamsvariable = @game_teams.group_by do |game_id, game|
+  def game_teams_variable
+    game_teams_variable = @game_teams.group_by do |game_id, game|
       game.game_id
     end
-    # binding.pry
-    gameteamsvariable.each do |game_id, games|
-      # binding.pry
-      gameteamshash[games[0][1].team_id] = 0
-      gameteamshash[games[1][1].team_id] = 0
+    game_teams_variable
+  end
+
+  def create_game_teams_hash
+    create_game_teams_hash = {}
+    game_teams_variable.each do |game_id, games|
+      create_game_teams_hash[games[0][1].team_id] = 0
+      create_game_teams_hash[games[1][1].team_id] = 0
     end
-    # binding.pry
-    gameteamsvariable.each do |game_id, games|
-      # binding.pry
-      gameteamshash[games[0][1].team_id] += games[1][1].goals.to_i
+    create_game_teams_hash
+  end
+
+  def add_scores_to_game_teams_hash
+    game_teams_hash = create_game_teams_hash
+    game_teams_variable.each do |game_id, games|
+      game_teams_hash[games[0][1].team_id] += games[1][1].goals.to_i
+      game_teams_hash[games[1][1].team_id] += games[0][1].goals.to_i
     end
-    # binding.pry
-     minimum = gameteamshash.values.min
-     # binding.pry
-     minimum_team_id = gameteamshash.key(minimum).to_i
-     # binding.pry
+    game_teams_hash
+  end
+
+  def best_defense
+     minimum = add_scores_to_game_teams_hash.values.min
+     minimum_team_id = add_scores_to_game_teams_hash.key(minimum).to_i
      best_defense_team = ""
-     # binding.pry
      @teams.values.each do |team|
        if team.teamid == minimum_team_id.to_s
-         # binding.pry
          best_defense_team = team.teamName
        end
      end
@@ -188,31 +193,11 @@ module GameTeamStats
   end
 
   def worst_defense
-    gameteamshash = {}
-    gameteamsvariable = @game_teams.group_by do |game_id, game|
-      game.game_id
-    end
-    # binding.pry
-    gameteamsvariable.each do |game_id, games|
-      # binding.pry
-      gameteamshash[games[0][1].team_id] = 0
-      gameteamshash[games[1][1].team_id] = 0
-    end
-    # binding.pry
-    gameteamsvariable.each do |game_id, games|
-      # binding.pry
-      gameteamshash[games[0][1].team_id] += games[1][1].goals.to_i
-    end
-    # binding.pry
-     maximum = gameteamshash.values.max
-     # binding.pry
-     maximum_team_id = gameteamshash.key(maximum).to_i
-     # binding.pry
+     maximum = add_scores_to_game_teams_hash.values.max
+     maximum_team_id = add_scores_to_game_teams_hash.key(maximum).to_i
      worst_defense_team = ""
-     # binding.pry
      @teams.values.each do |team|
        if team.teamid == maximum_team_id.to_s
-         # binding.pry
          worst_defense_team = team.teamName
        end
      end

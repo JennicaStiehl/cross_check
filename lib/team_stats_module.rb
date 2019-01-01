@@ -6,6 +6,7 @@ require './lib/stat_tracker'
 module TeamStats
 
   def get_team_name_from_id(team_id)
+    # binding.pry
     name = @teams.values.find do |team|
       team.teamid == team_id
     end.teamName
