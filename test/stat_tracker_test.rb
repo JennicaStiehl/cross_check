@@ -449,9 +449,17 @@ class StatTrackerTest < Minitest::Test
   def test_for_biggest_bust
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/team_info.csv')
-      stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
 
     assert_equal "Bruins", stat_tracker.biggest_bust("20122013")
+  end
+
+  def test_for_biggest_surprise
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Rangers", stat_tracker.biggest_surprise("20122013")
   end
 
 end

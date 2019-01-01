@@ -435,9 +435,28 @@ summary = {}
       if team.teamid == biggest_decrease[0]
         name_of_team_with_biggest_bust = team.teamName
       end
-
     end
     name_of_team_with_biggest_bust
+  end
+
+  def biggest_surprise(season)
+    collection = @games.to_a
+    regular_season_game_hash(collection, season)
+    preseason_game_hash(collection, season)
+    win_percentage_by_team_and_season = {}
+    create_team_id_array(collection, season).each do |team_id|
+      win_percentage_by_team_and_season[team_id] = win_percentage(regular_season_game_hash(collection, season), team_id) - win_percentage(preseason_game_hash(collection, season), team_id)
+    end
+    biggest_increase = win_percentage_by_team_and_season.max_by do |team_id, win|
+      win
+    end
+    name_of_team_with_biggest_surprise = ""
+    @teams.values.each do |team|
+      if team.teamid == biggest_increase[0]
+        name_of_team_with_biggest_surprise = team.teamName
+      end
+    end
+    name_of_team_with_biggest_surprise
   end
 
 end
