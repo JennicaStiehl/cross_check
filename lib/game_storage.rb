@@ -3,6 +3,8 @@ require './lib/team_storage'
 
 class GameStorage
 
+  attr_reader :games
+
   attr_accessor   :games,
                   :game_storage
 

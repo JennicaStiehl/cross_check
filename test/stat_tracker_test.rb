@@ -415,24 +415,41 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_create_a_preseason_game_hash
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
 
-    assert_equal 5, stat_tracker.preseason_game_hash("20122013").length
+    assert_equal 5, stat_tracker.preseason_game_hash(stat_tracker.games, "20122013").length
   end
 
   def test_it_can_create_a_regular_season_hash
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
 
-    assert_equal 10, stat_tracker.regular_season_game_hash("20122013").length
+    assert_equal 10, stat_tracker.regular_season_game_hash(stat_tracker.games, "20122013").length
+  end
+
+  def test_to_create_team_id_array
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal ["6", "3", "12", "2", "14", "10", "1", "8"], stat_tracker.create_team_id_array(stat_tracker.games, "20122013")
+  end
+
+  def test_that_team_has_pre_and_regular_season_games
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal [], stat_tracker.check_for_pre_and_regular_season_games("20122013")
   end
 
   def test_for_biggest_bust
-    skip
-
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
+      stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
 
     assert_equal "Bruins", stat_tracker.biggest_bust("20122013")
   end

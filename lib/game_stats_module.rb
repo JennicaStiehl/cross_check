@@ -378,10 +378,10 @@ summary = {}
     average_goals_by_season
   end
 
-  def preseason_game_hash(season, collection = @games)
-    preseason_game_hash = collection
+  def preseason_game_hash(collection, season)
+    preseason_game_hash = collection.to_h
     array_of_preseason_games = []
-    collection.values.each do |game|
+    collection.to_h.values.each do |game|
       if game.type == "P" && game.season == season
         array_of_preseason_games << game
       end
@@ -394,17 +394,50 @@ summary = {}
     preseason_game_hash
   end
 
-  def regular_season_game_hash(season, collection = @games)
-    regular_season_game_hash = collection
+  def regular_season_game_hash(collection, season)
+    regular_season_game_hash = collection.to_h
     regular_season_game_hash.delete_if do |game_id, game|
-      # binding.pry
       game.type == "P" || game.season != season
     end
     regular_season_game_hash
   end
 
+  def create_team_id_array(collection, season)
+    team_id_array = []
+    collection.to_h.each do |game_id, game|
+      if game.season == season
+      team_id_array << game.home_team_id
+      team_id_array << game.away_team_id
+      end
+    end
+    team_id_array.uniq
+  end
+
+  # def check_for_pre_and_regular_season_games(season, collection = @games)
+  #   teams_in_pre_and_regular_season = []
+  #   create_team_id_array(season).each do |team_id|
+  #   end
+  # end
+
   def biggest_bust(season)
-    preseason_game_hash(season)
+    collection = @games.to_a
+    regular_season_game_hash(collection, season)
+    preseason_game_hash(collection, season)
+    win_percentage_by_team_and_season = {}
+    create_team_id_array(collection, season).each do |team_id|
+      win_percentage_by_team_and_season[team_id] = win_percentage(preseason_game_hash(collection, season), team_id) - win_percentage(regular_season_game_hash(collection, season), team_id)
+    end
+    biggest_decrease = win_percentage_by_team_and_season.max_by do |team_id, win|
+      win
+    end
+    name_of_team_with_biggest_bust = ""
+    @teams.values.each do |team|
+      if team.teamid == biggest_decrease[0]
+        name_of_team_with_biggest_bust = team.teamName
+      end
+
+    end
+    name_of_team_with_biggest_bust
   end
 
 end
