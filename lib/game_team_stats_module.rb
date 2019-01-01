@@ -87,63 +87,40 @@ module GameTeamStats
 
   def worst_fans
     better_away_than_home_records = []
-
-    teams_by_id = @game_team_storage.game_teams.values.group_by do |game_team|
-      game_team.team_id
-    end
-
-    game_away_win_percentage = {}
-    teams_by_id.keys.each do |team_id|
-      home_count = teams_by_id[team_id].select do |game|
-        game.HoA == "home"
-      end
-
-      home_win_count = home_count.select do |game|
-        game.won == "TRUE"
-      end
-
-      away_count = teams_by_id[team_id].select do |game|
-        game.HoA == "away"
-      end
-
-      away_win_count = away_count.select do |game|
-        game.won == "TRUE"
-      end
-
-      game_away_win_percentage.store(team_id, ((away_win_count.count.to_f / away_count.count.to_f) - (home_win_count.count.to_f / home_count.count.to_f)))
-
-      if game_away_win_percentage[team_id] > 0.0
+    teams_grouped_by_team_id = group_game_teams_by_team_id
+    teams_grouped_by_team_id.keys.each do |team_id|
+      home_count = home_game_count(teams_grouped_by_team_id, team_id)
+      home_win_count = home_game_win_count(teams_grouped_by_team_id, team_id)
+      away_count = away_game_count(teams_grouped_by_team_id, team_id)
+      away_win_count = away_game_win_count(teams_grouped_by_team_id, team_id)
+      win_percentage_difference = ((away_win_count.to_f / away_count.to_f) - (home_win_count.to_f / home_count.to_f))
+      if win_percentage_difference > 0.0
         better_away_than_home_records << @team_storage.teams[team_id.to_i].teamName
       end
     end
     better_away_than_home_records
   end
 
+  def team_record(team_id)
+    @game_team_storage.game_teams.values.select do |game_team|
+      game_team.team_id == team_id
+  end
+
+  end
+
   def most_goals_scored(team_id)
     highest_number_of_goals = 0
-
-    team = @game_team_storage.game_teams.values.select do |game_team|
-      game_team.team_id == team_id
-    end
-
-    highest_number_of_goals = team.max do |team_1, team_2|
+    highest_number_of_goals = team_record(team_id).max do |team_1, team_2|
       team_1.goals <=> team_2.goals
     end
-
     highest_number_of_goals.goals.to_i
   end
 
   def fewest_goals_scored(team_id)
     lowest_number_of_goals = 0
-
-    team = @game_team_storage.game_teams.values.select do |game_team|
-      game_team.team_id == team_id
-    end
-
-    lowest_number_of_goals = team.min do |team_1, team_2|
+    lowest_number_of_goals = team_record(team_id).min do |team_1, team_2|
       team_1.goals <=> team_2.goals
     end
-
     lowest_number_of_goals.goals.to_i
   end
 

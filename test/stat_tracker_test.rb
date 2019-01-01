@@ -297,7 +297,12 @@ class StatTrackerTest < Minitest::Test
 
     assert_equal 4.98, stat_tracker.avg_goals_per_game
   end
-  #Erin's iteration 4
+
+  def test_it_can_get_a_team_record
+    # skip
+    assert_equal 3, @stat_tracker.team_record("6").count
+  end
+
   def test_it_can_find_most_goals_scored
 
     assert_equal 6, @stat_tracker.most_goals_scored("6")
@@ -315,7 +320,7 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_average_win_percentage
 
-    assert_equal 0.17, @stat_tracker.average_win_percentage("3")
+    assert_equal 16.67, @stat_tracker.average_win_percentage("3")
   end
 
   def test_it_can_sum_goals_scored
