@@ -1,0 +1,4 @@
+"team_id","franchiseId","shortName","teamName","abbreviation","link"
+"6","6","Boston","Bruins","BOS","/api/v1/teams/6"
+"3","10","NY Rangers","Rangers","NYR","/api/v1/teams/3"
+"5","17","Pittsburgh","Penguins","PIT","/api/v1/teams/5"

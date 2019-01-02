@@ -78,7 +78,6 @@ module GameStats
     (wins.to_f / total_games.to_f) * 100
   end
 
-
   # def find_home_team_goals_from_games(collection = @games, team_id)
   #   goals = 0
   #   collection.values.find_all do |game|
@@ -88,79 +87,54 @@ module GameStats
   #   end
   #   goals
   # end
+
   def percentage_home_wins
-    percentage_home_wins = 0
-    total_games_played = 0
-    total_home_games_won = []
-    # find the total games played
-    total_games_played = @game_storage.games.keys.count
-    # find the total home games played and won
-    total_home_games_won = @game_storage.games.values.select do |game|
+    total_games_played = @games.keys.count
+    total_home_games_won = @games.values.select do |game|
       game.outcome.include?("home")
     end
-
-    percentage_home_wins = total_home_games_won.count.to_f / total_games_played.to_f
-
-    return percentage_home_wins
+    total_home_games_won.count.to_f / total_games_played.to_f
   end
 
   def percentage_visitor_wins
-    percentage_visitor_wins = 0
-    total_games_played = 0
-    total_visitor_games_won = []
-    # find the total games played
-    total_games_played = @game_storage.games.keys.count
-    # find the total visitor games played and won
-    total_visitor_games_won = @game_storage.games.values.select do |game|
+    total_games_played = @games.keys.count
+    total_visitor_games_won = @games.values.select do |game|
       game.outcome.include?("away")
     end
-    #do the math and return it
-    percentage_visitor_wins = total_visitor_games_won.count.to_f / total_games_played.to_f
-
-    return percentage_visitor_wins
+    total_visitor_games_won.count.to_f / total_games_played.to_f
   end
 
   def create_hash_by_season
-    total_games_by_season = @game_storage.games.values.group_by do |game|
+    total_games_by_season = @games.values.group_by do |game|
       game.season
     end
     total_games_by_season
   end
 
   def season_with_most_games
-    season_with_most_games = 0
-
     season_with_most_games = create_hash_by_season.keys.max do |season_1, season_2|
       create_hash_by_season[season_1].count <=> create_hash_by_season[season_2].count
     end
-
-    return season_with_most_games.to_i
+    season_with_most_games.to_i
   end
 
   def season_with_fewest_games
-    season_with_fewest_games = 0
-
     season_with_fewest_games = create_hash_by_season.keys.min do |season_1, season_2|
       create_hash_by_season[season_1].count <=> create_hash_by_season[season_2].count
     end
-
-    return season_with_fewest_games.to_i
+    season_with_fewest_games.to_i
   end
 
   def count_of_games_by_season
     count_of_games_by_season = {}
-
-    total_games_by_season = @game_storage.games.values.group_by do |game|
+    total_games_by_season = @games.values.group_by do |game|
       game.season
     end
-
     total_games_by_season.keys.each do |season|
       count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
     end
     count_of_games_by_season
   end
-
-
 
   def win_loss(team_id)
     h2h = {}
@@ -197,7 +171,6 @@ module GameStats
     end
     most_popular_venue
   end
-
 
   def most_popular_venue
     popular_venue_array = []

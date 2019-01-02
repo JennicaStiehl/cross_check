@@ -12,7 +12,7 @@ module TeamStats
   end
 
   def count_of_teams
-    total_number_of_teams = @team_storage.teams.count
+    @team_storage.teams.count
   end
 
   def best_offense
