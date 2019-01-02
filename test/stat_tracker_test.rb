@@ -462,4 +462,55 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Rangers", stat_tracker.biggest_surprise("20122013")
   end
 
+  def test_it_can_get_team_id_from_team_name
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+
+    assert_equal "16", stat_tracker.team_id_from_team_name("Blackhawks")
+  end
+
+  def test_to_create_array_of_losses
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 6, stat_tracker.array_of_losses("3").length
+  end
+
+  def test_to_create_array_of_opponents
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 6, stat_tracker.array_of_opponents("3", stat_tracker.array_of_losses("3")).length
+  end
+
+  def test_for_rival
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Blackhawks", stat_tracker.rival("Lightning")
+  end
+
+  def test_to_create_array_of_wins
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 6, stat_tracker.array_of_wins("3").length
+  end
+
+  def test_for_favorite_opponent
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Maple Leafs", stat_tracker.favorite_opponent("Rangers")
+  end
+
 end
