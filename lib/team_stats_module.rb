@@ -16,6 +16,4 @@ module TeamStats
     total_number_of_teams = @team_storage.teams.count
   end
 
-
-
 end
