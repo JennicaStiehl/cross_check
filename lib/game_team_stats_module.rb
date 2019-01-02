@@ -103,9 +103,7 @@ module GameTeamStats
 
   def team_record(team_id)
     @game_team_storage.game_teams.values.select do |game_team|
-      game_team.team_id == team_id
-  end
-
+       game_team.team_id == team_id
   end
 
   def most_goals_scored(team_id)
@@ -143,4 +141,72 @@ module GameTeamStats
     end
     return biggest_goal_difference
   end
+
+  def average_win_percentage(team_id)
+    count_of_games = @game_team_storage.game_teams.values.select do |game_team|
+      team_id == game_team.team_id
+    end
+    total_games = count_of_games.count
+
+    count_of_wins = @game_team_storage.game_teams.values.select do |game_team|
+      team_id == game_team.team_id && game_team.won == "TRUE"
+    end
+    total_wins = count_of_wins.count
+
+    average_win_percentage = total_wins.to_f / total_games.to_f
+    return average_win_percentage.round(2)
+  end
+
+  def sort_teams_by_team_id
+    team_id_array =[]
+    @game_teams.values.each do |game|
+      team_id_array << game.team_id
+    end
+    team_id_array.uniq
+  end
+
+  def create_team_to_goals_hash
+    @team_to_goals_hash = {}
+      sort_teams_by_team_id.each do |team_id|
+        team_to_goals_hash[team_id] = 0
+      end
+    @team_to_goals_hash
+  end
+
+
+  def add_goals_to_team_to_goals_hash
+    create_team_to_goals_hash
+    @game_teams.values.each do |game|
+      @team_to_goals_hash[game.team_id] += game.goals.to_i
+    end
+    @team_to_goals_hash
+  end
+
+  def create_hash_of_games_played
+    @games_played_by_team = {}
+    sort_teams_by_team_id.each do |team_id|
+      games_played_by_team[team_id] = 0
+    end
+    @games_played_by_team
+  end
+
+  def add_games_to_games_played_by_team
+    create_hash_of_games_played
+    @game_teams.values.each do |game|
+      @games_played_by_team[game.team_id] += 1
+    end
+    @games_played_by_team
+  end
+
+  def average_team_goals_across_all_seasons
+    add_goals_to_team_to_goals_hash
+    add_games_to_games_played_by_team
+    average_team_goals_across_all_seasons = {}
+    @team_to_goals_hash.each do |team_id, goals|
+      average_team_goals_across_all_seasons[team_id] = (goals / @games_played_by_team[team_id])
+    end
+    average_team_goals_across_all_seasons
+  end
+
+
 end
