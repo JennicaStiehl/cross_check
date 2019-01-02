@@ -122,8 +122,6 @@ class StatTrackerTest < Minitest::Test
 
 
   def test_it_can_calculate_percentage_home_wins
-    @stat_tracker
-    @get_game_info
 
     assert_equal 0.8, @stat_tracker.percentage_home_wins
   end
@@ -163,19 +161,63 @@ class StatTrackerTest < Minitest::Test
     assert_equal 7, @stat_tracker.count_of_teams
   end
 
+  def test_it_can_group_game_teams_by_team_id
+
+    assert_equal 3, @stat_tracker.group_game_teams_by_team_id.keys.count
+    #count number of team_ids
+    assert_equal 6, @stat_tracker.group_game_teams_by_team_id["3"].count
+    #count number of game_team objects associated with team_id "3"
+  end
+
+  def test_it_calculates_game_win_percentage
+
+    assert_equal ({"3"=>0.16666666666666666, "6"=>1.0, "5"=>0.75}), @stat_tracker.game_win_percentage
+  end
+
   def test_it_can_calculate_the_winningest_team
+
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
+  def test_home_game_count
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 2, @stat_tracker.home_game_count(teams_grouped_by_team_id, "3")
+  end
+
+  def test_home_game_win_count
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 0, @stat_tracker.home_game_win_count(teams_grouped_by_team_id, "3")
+  end
+
+  def away_game_count
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 4, @stat_tracker.away_game_count(teams_grouped_by_team_id, "3")
+  end
+
+  def test_away_game_win_count
+    # skip
+    teams_grouped_by_team_id = @stat_tracker.group_game_teams_by_team_id
+
+    assert_equal 1, @stat_tracker.away_game_win_count(teams_grouped_by_team_id, "3")
+  end
+
   def test_it_can_calculate_best_fans
+
     assert_equal "Bruins", @stat_tracker.best_fans
   end
 
   def test_it_can_calculate_worst_fans
+    skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_game_teams('./data/longer_sample_game_teams_stats.csv')
-    stat_tracker.parse_games('./data/game.csv')
-    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_game_teams('./data/worst_fans_sample_game_teams_stats.csv')
+    stat_tracker.parse_games('./data/worst_fans_sample_game.csv')
+    stat_tracker.parse_teams('./data/worst_fans_sample_team_info.csv')
 
     assert_equal ["Rangers", "Bruins"], stat_tracker.worst_fans
   end
@@ -257,7 +299,12 @@ class StatTrackerTest < Minitest::Test
 
     assert_equal 4.98, stat_tracker.avg_goals_per_game
   end
-  #Erin's iteration 4
+
+  def test_it_can_get_a_team_record
+    # skip
+    assert_equal 3, @stat_tracker.team_record("6").count
+  end
+
   def test_it_can_find_most_goals_scored
 
     assert_equal 6, @stat_tracker.most_goals_scored("6")
@@ -275,34 +322,86 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_average_win_percentage
 
-    assert_equal 0.17, @stat_tracker.average_win_percentage("3")
+    assert_equal 16.67, @stat_tracker.average_win_percentage("3")
   end
 
   def test_it_can_sum_goals_scored
-    skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    assert_equal ({}), stat_tracker.goals_scored
+    expected = 16
+    assert_equal expected, stat_tracker.goals_scored("3","20122013")
+  end
+
+
+  def test_it_can_sum_goals_against
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = 12
+    assert_equal expected, stat_tracker.goals_against("3","20122013")
+  end
+
+  def test_it_can_sum_wins
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = 4#({"P"=>{6=>4, 3=>1}})
+    assert_equal expected, stat_tracker.total_wins("3","20122013")
+  end
+
+  def test_it_can_count_games
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = 7
+    assert_equal expected, stat_tracker.total_game_count("3","20122013")
   end
 
   def test_it_can_summarize_seasons
-    skip
+    # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    expected = ({
-      "P"=>{
-        :win_percentage => 0.25,
-        :goals_scored => 0,
-        :goals_against => 10
-      },
-      "R"=>{
-        :win_percentage => 0.25,
-        :goals_scored => 0,
-        :goals_against => 10
-        }})
-    assert_equal expected, stat_tracker.season_summary(collection = @games, "3")
+    expected = ({"20122013"=>
+                  {"P"=>{
+                    :win_percentage=>0.57,
+                    :goals_scored=>16,
+                    :goals_against=>12}}})
+    assert_equal expected, stat_tracker.season_summary("3","20122013")
+  end
+
+  def test_it_can_give_a_seasonal_summary
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = ({"20122013"=>{"P"=>
+      {:win_percentage=>0.57,
+        :goals_scored=>16,
+        :goals_against=>12}},
+        "20142015"=>{"P"=>
+          {:win_percentage=>0.0,
+            :goals_scored=>0,
+            :goals_against=>0}},
+            "20152016"=>{"P"=>
+              {:win_percentage=>0.25,
+                :goals_scored=>7,
+                :goals_against=>15}},
+                "20162017"=>{"P"=>
+                  {:win_percentage=>0.0,
+                    :goals_scored=>0,
+                    :goals_against=>0}}}
+                    )
+    assert_equal expected, stat_tracker.seasonal_summary("3")
+  end
+
+  def test_it_can_list_seasons
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_seasons.csv')
+
+    expected = ["20122013", "20162017", "20142015", "20152016"]
+    assert_equal expected, stat_tracker.all_seasons
   end
 
   def test_it_can_sort_teams_by_team_id
