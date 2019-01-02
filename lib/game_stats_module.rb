@@ -306,6 +306,9 @@ module GameStats
   end
 
   def season_summary(team_id = "3", the_season = all_seasons)
+#season_summary	A hash with two keys
+#(:preseason, and :regular_season) each pointing to a hash with the keys
+#:win_percentage, :goals_scored, and :goals_against
 summary = {}
 seasons = []
 seasons << the_season
