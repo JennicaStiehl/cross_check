@@ -33,16 +33,6 @@ class Game
     @venue_time_zone_tz = game_info[:venue_time_zone_tz]
   end
 
-  def get_team_name_from_id(team_id)
-    name = ""
-    binding.pry
-    .teams.values.each do |team|
-      if team.teamid == team_id
-      name = team.teamName
-      end
-    end
-    name
-  end
 
 
 end
