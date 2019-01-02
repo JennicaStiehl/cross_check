@@ -90,7 +90,8 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_calculate_percentage_wins
     stat_tracker = StatTracker.new
-    get_game_info = stat_tracker.parse_games('./data/sample_game.csv')
+    # get_game_info =
+    stat_tracker.parse_games('./data/sample_game.csv')
 
     assert_equal 20.0, stat_tracker.win_percentage(stat_tracker.games, "3")
   end
@@ -459,6 +460,156 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_teams('./data/team_info.csv')
 
     assert_equal "Rangers", stat_tracker.worst_offense
+  end
+
+  def test_for_average_goals_per_game_per_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+
+    assert_equal ({"20122013" => 249}), stat_tracker.average_goals_per_game_per_season
+  end
+
+  def test_for_average_goals_by_season
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/longer_sample_game.csv')
+
+    assert_equal ({20122013 => 4}), stat_tracker.average_goals_by_season
+  end
+
+  def test_to_create_game_teams_variable
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
+
+    assert_equal ["2012030221", "2012030222"], stat_tracker.game_teams_variable.keys
+  end
+
+  def test_to_create_game_teams_hash_for_best_worst_defense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
+
+    assert_equal ({"3" => 0, "6" => 0}), stat_tracker.create_game_teams_hash
+  end
+
+  def test_it_can_populate_game_teams_hash_with_scores
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
+
+    assert_equal ({"3" => 8, "6" => 4}), stat_tracker.add_scores_to_game_teams_hash
+  end
+
+  def test_for_best_defense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
+
+    assert_equal "Bruins", stat_tracker.best_defense
+  end
+
+  def test_for_worst_defense
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
+
+    assert_equal "Rangers", stat_tracker.worst_defense
+  end
+
+  def test_it_can_create_a_preseason_game_hash
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 5, stat_tracker.preseason_game_hash(stat_tracker.games, "20122013").length
+  end
+
+  def test_it_can_create_a_regular_season_hash
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 10, stat_tracker.regular_season_game_hash(stat_tracker.games, "20122013").length
+  end
+
+  def test_to_create_team_id_array
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal ["6", "3", "12", "2", "14", "10", "1", "8"], stat_tracker.create_team_id_array(stat_tracker.games, "20122013")
+  end
+
+  def test_that_team_has_pre_and_regular_season_games
+    skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal [], stat_tracker.check_for_pre_and_regular_season_games("20122013")
+  end
+
+  def test_for_biggest_bust
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Bruins", stat_tracker.biggest_bust("20122013")
+  end
+
+  def test_for_biggest_surprise
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Rangers", stat_tracker.biggest_surprise("20122013")
+  end
+
+  def test_it_can_get_team_id_from_team_name
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+
+    assert_equal "16", stat_tracker.team_id_from_team_name("Blackhawks")
+  end
+
+  def test_to_create_array_of_losses
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 6, stat_tracker.array_of_losses("3").length
+  end
+
+  def test_to_create_array_of_opponents
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 6, stat_tracker.array_of_opponents("3", stat_tracker.array_of_losses("3")).length
+  end
+
+  def test_for_rival
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Blackhawks", stat_tracker.rival("Lightning")
+  end
+
+  def test_to_create_array_of_wins
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal 6, stat_tracker.array_of_wins("3").length
+  end
+
+  def test_for_favorite_opponent
+    # skip
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/team_info.csv')
+    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+
+    assert_equal "Maple Leafs", stat_tracker.favorite_opponent("Rangers")
   end
 
 end

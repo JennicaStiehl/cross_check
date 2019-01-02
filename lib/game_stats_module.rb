@@ -325,4 +325,178 @@ s.each do |season|
     summary
   end
 
+  def average_goals_per_game_per_season
+    average_goals_per_game_per_season = {}
+    @games.values.each do |game|
+      average_goals_per_game_per_season[game.season] = 0
+    end
+    @games.values.each do |game|
+      average_goals_per_game_per_season[game.season] += game.home_goals.to_i + game.away_goals.to_i
+    end
+    average_goals_per_game_per_season
+  end
+
+  def average_goals_by_season
+    average_goals_by_season = {}
+    count_of_games_by_season.each do |season, count|
+      average_goals_by_season[season] = (average_goals_per_game_per_season[season.to_s] / count)
+    end
+    average_goals_by_season
+  end
+
+  def preseason_game_hash(collection, season)
+    preseason_game_hash = collection.to_h
+    array_of_preseason_games = []
+    collection.to_h.values.each do |game|
+      if game.type == "P" && game.season == season
+        array_of_preseason_games << game
+      end
+    end
+    preseason_game_hash.values.each do |game|
+      if array_of_preseason_games.include?(game) == false
+        preseason_game_hash.delete(preseason_game_hash.key(game))
+      end
+    end
+    preseason_game_hash
+  end
+
+  def regular_season_game_hash(collection, season)
+    regular_season_game_hash = collection.to_h
+    regular_season_game_hash.delete_if do |game_id, game|
+      game.type == "P" || game.season != season
+    end
+    regular_season_game_hash
+  end
+
+  def create_team_id_array(collection, season)
+    team_id_array = []
+    collection.to_h.each do |game_id, game|
+      if game.season == season
+      team_id_array << game.home_team_id
+      team_id_array << game.away_team_id
+      end
+    end
+    team_id_array.uniq
+  end
+
+  def biggest_bust(season)
+    collection = @games.to_a
+    regular_season_game_hash(collection, season)
+    preseason_game_hash(collection, season)
+    win_percentage_by_team_and_season = {}
+    create_team_id_array(collection, season).each do |team_id|
+      win_percentage_by_team_and_season[team_id] = win_percentage(preseason_game_hash(collection, season), team_id) - win_percentage(regular_season_game_hash(collection, season), team_id)
+    end
+    biggest_decrease = win_percentage_by_team_and_season.max_by do |team_id, win|
+      win
+    end
+    name_of_team_with_biggest_bust = ""
+    @teams.values.each do |team|
+      if team.teamid == biggest_decrease[0]
+        name_of_team_with_biggest_bust = team.teamName
+      end
+    end
+    name_of_team_with_biggest_bust
+  end
+
+  def biggest_surprise(season)
+    collection = @games.to_a
+    regular_season_game_hash(collection, season)
+    preseason_game_hash(collection, season)
+    win_percentage_by_team_and_season = {}
+    create_team_id_array(collection, season).each do |team_id|
+      win_percentage_by_team_and_season[team_id] = win_percentage(regular_season_game_hash(collection, season), team_id) - win_percentage(preseason_game_hash(collection, season), team_id)
+    end
+    biggest_increase = win_percentage_by_team_and_season.max_by do |team_id, win|
+      win
+    end
+    name_of_team_with_biggest_surprise = ""
+    @teams.values.each do |team|
+      if team.teamid == biggest_increase[0]
+        name_of_team_with_biggest_surprise = team.teamName
+      end
+    end
+    name_of_team_with_biggest_surprise
+  end
+
+  def team_id_from_team_name(name)
+    team_id = ""
+    @teams.values.each do |team|
+      if team.teamName == name
+        team_id = team.teamid
+      end
+    end
+    team_id
+  end
+
+  def array_of_losses(collection = @games, team_id)
+    losses = []
+    collection.values.each do |game|
+      if (game.outcome.start_with?("away win") && game.home_team_id == team_id) || (game.outcome.start_with?("home win") && game.away_team_id == team_id)
+        losses << game
+      end
+    end
+    losses
+  end
+
+  def array_of_opponents(collection = @games, teamid, input)
+    array_of_opponents = []
+    # binding.pry
+    input.each do |game|
+      if game.home_team_id == teamid
+        array_of_opponents << game.away_team_id.to_i
+      elsif game.away_team_id == teamid
+        array_of_opponents << game.home_team_id.to_i
+      end
+    end
+    array_of_opponents
+  end
+
+  def rival(teamname)
+    team_id_from_team_name(teamname)
+    input = array_of_losses(team_id_from_team_name(teamname))
+    rival_team_id_hash = Hash.new(0)
+    array_of_opponents(team_id_from_team_name(teamname), input).each do |opponent|
+      rival_team_id_hash[opponent] += 1
+    end
+    rival_team_id_hash_value = rival_team_id_hash.values.max
+    rival_team_id = rival_team_id_hash.key(rival_team_id_hash_value).to_s
+    rival_team_name = ""
+    # binding.pry
+    @teams.values.each do |team|
+      if team.teamid == rival_team_id
+        rival_team_name = team.teamName
+      end
+    end
+    rival_team_name
+  end
+
+  def array_of_wins(collection = @games, team_id)
+    wins = []
+    collection.values.each do |game|
+      if (game.outcome.start_with?("away win") && game.away_team_id == team_id) || (game.outcome.start_with?("home win") && game.home_team_id == team_id)
+        wins << game
+      end
+    end
+    wins
+  end
+
+  def favorite_opponent(teamname)
+    team_id_from_team_name(teamname)
+    input = array_of_wins(team_id_from_team_name(teamname))
+    favorite_opponent_team_id_hash = Hash.new(0)
+    array_of_opponents(team_id_from_team_name(teamname), input).each do |opponent|
+      favorite_opponent_team_id_hash[opponent] += 1
+    end
+    favorite_opponent_team_id_hash_value = favorite_opponent_team_id_hash.values.max
+    favorite_opponent_team_id = favorite_opponent_team_id_hash.key(favorite_opponent_team_id_hash_value).to_s
+    favorite_opponent = ""
+    @teams.values.each do |team|
+      if team.teamid == favorite_opponent_team_id
+        favorite_opponent = team.teamName
+      end
+    end
+    favorite_opponent
+  end
+
 end

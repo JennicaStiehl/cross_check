@@ -142,6 +142,55 @@ module GameTeamStats
     return biggest_goal_difference
   end
 
+  def game_teams_variable
+    game_teams_variable = @game_teams.group_by do |game_id, game|
+      game.game_id
+    end
+    game_teams_variable
+  end
+
+  def create_game_teams_hash
+    create_game_teams_hash = {}
+    game_teams_variable.each do |game_id, games|
+      create_game_teams_hash[games[0][1].team_id] = 0
+      create_game_teams_hash[games[1][1].team_id] = 0
+    end
+    create_game_teams_hash
+  end
+
+  def add_scores_to_game_teams_hash
+    game_teams_hash = create_game_teams_hash
+    game_teams_variable.each do |game_id, games|
+      game_teams_hash[games[0][1].team_id] += games[1][1].goals.to_i
+      game_teams_hash[games[1][1].team_id] += games[0][1].goals.to_i
+    end
+    game_teams_hash
+  end
+
+  def best_defense
+     minimum = add_scores_to_game_teams_hash.values.min
+     minimum_team_id = add_scores_to_game_teams_hash.key(minimum).to_i
+     best_defense_team = ""
+     @teams.values.each do |team|
+       if team.teamid == minimum_team_id.to_s
+         best_defense_team = team.teamName
+       end
+     end
+     best_defense_team
+  end
+
+  def worst_defense
+     maximum = add_scores_to_game_teams_hash.values.max
+     maximum_team_id = add_scores_to_game_teams_hash.key(maximum).to_i
+     worst_defense_team = ""
+     @teams.values.each do |team|
+       if team.teamid == maximum_team_id.to_s
+         worst_defense_team = team.teamName
+       end
+     end
+     worst_defense_team
+  end
+
   def average_win_percentage(team_id)
     count_of_games = @game_team_storage.game_teams.values.select do |game_team|
       team_id == game_team.team_id
@@ -207,6 +256,5 @@ module GameTeamStats
     end
     average_team_goals_across_all_seasons
   end
-
 
 end
