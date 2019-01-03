@@ -30,4 +30,17 @@ module TeamStats
     season_summary(team_id, all_seasons)
   end
 
+  def team_info(id)
+    team_info = {}
+    team_values = @teams.find do |team|
+      team[0] == id.to_i
+    end
+    team_info[:teamid] = team_values[1].teamid
+    team_info[:franchiseid] = team_values[1].franchiseId
+    team_info[:shortname] = team_values[1].shortName
+    team_info[:teamname] = team_values[1].teamName
+    team_info[:abbreviation] = team_values[1].abbreviation
+    team_info[:link] = team_values[1].link
+    team_info
+  end
 end
