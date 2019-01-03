@@ -108,10 +108,4 @@ class StatTracker
       @games
     end
 
-  def average_win_percentage(team_id)
-    count_of_games = wins(@games, team_id) + losses(@games, team_id)
-    count_of_wins = wins(@games, team_id)
-    ((count_of_wins.to_f / count_of_games.to_f) * 100).round(2)
-  end
-
 end
