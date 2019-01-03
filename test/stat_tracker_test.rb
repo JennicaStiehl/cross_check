@@ -565,7 +565,7 @@ class StatTrackerTest < Minitest::Test
   def test_for_worst_defense
     # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
     stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
 
     assert_equal "Rangers", stat_tracker.worst_defense
