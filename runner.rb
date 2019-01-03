@@ -10,6 +10,6 @@ locations = {
   game_teams: game_teams_path
 }
 
-stat_tracker = StatTracker.from_csv('./data/sample_team_info.csv')
+stat_tracker = StatTracker.from_csv(locations)
 
-require 'pry'; binding.pry
+# require 'pry'; binding.pry

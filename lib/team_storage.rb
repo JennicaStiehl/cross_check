@@ -1,4 +1,4 @@
-require './lib/storage'
+# require_relative './storage'
 
 class TeamStorage #< Storage
   attr_accessor   :team_storage,

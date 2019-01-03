@@ -1,5 +1,5 @@
-require './lib/stat_tracker'
-require './lib/team_storage'
+require_relative './stat_tracker'
+require_relative './team_storage'
 
 class GameStorage
 

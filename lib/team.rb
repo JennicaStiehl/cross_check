@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 class Team
 
   attr_accessor :teamid,
@@ -29,5 +29,5 @@ class Team
       team_info[:abbreviation] = @abbreviation
       team_info[:link] = @link
       team_info
-    end 
+    end
 end

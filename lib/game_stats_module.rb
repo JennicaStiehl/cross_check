@@ -1,7 +1,7 @@
-require 'pry'
-require './lib/game'
-require './lib/game_storage'
-require './lib/stat_tracker'
+# require 'pry'
+require_relative './game'
+require_relative './game_storage'
+require_relative './stat_tracker'
 
 module GameStats
 
@@ -93,7 +93,7 @@ module GameStats
     total_home_games_won = @games.values.select do |game|
       game.outcome.include?("home")
     end
-    total_home_games_won.count.to_f / total_games_played.to_f
+    (total_home_games_won.count.to_f / total_games_played.to_f).round(2)
   end
 
   def percentage_visitor_wins
@@ -101,7 +101,7 @@ module GameStats
     total_visitor_games_won = @games.values.select do |game|
       game.outcome.include?("away")
     end
-    total_visitor_games_won.count.to_f / total_games_played.to_f
+    (total_visitor_games_won.count.to_f / total_games_played.to_f).round(2)
   end
 
   def create_hash_by_season
@@ -159,6 +159,7 @@ module GameStats
     venues = []
     @games.each do |game|
       venues << game[1].venue
+      # binding.pry
     end
     venues
   end
@@ -169,6 +170,7 @@ module GameStats
     sort_games_by_venue.each do |venue|
       most_popular_venue[venue] += 1
     end
+    # binding.pry
     most_popular_venue
   end
 
@@ -182,10 +184,12 @@ module GameStats
 
   def least_popular_venue
     unpopular_venue_array = []
-    unpopular_venue_array = order_games_by_venue.sort_by do |key, value|
+    unpopular_venue_array = order_games_by_venue.min_by do |key, value|
+      # binding.pry
       value
     end
-    unpopular_venue_array[0][0]
+    # binding.pry
+    unpopular_venue_array[0]
   end
 
 #needed to setup avg goals per game

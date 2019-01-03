@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 class GameTeam
 
   attr_accessor :game_id,

@@ -1,14 +1,14 @@
-require "csv"
-require 'pry'
-require './lib/team'
-require './lib/game'
-require './lib/game_team'
-require './lib/team_storage'
-require './lib/game_storage'
-require './lib/game_team_storage'
-require './lib/game_stats_module'
-require './lib/game_team_stats_module'
-require './lib/team_stats_module'
+require 'csv'
+# require 'pry'
+require_relative './team'
+require_relative './game'
+require_relative './game_team'
+require_relative './team_storage'
+require_relative './game_storage'
+require_relative './game_team_storage'
+require_relative './game_stats_module'
+require_relative './game_team_stats_module'
+require_relative './team_stats_module'
 
 class StatTracker
 
@@ -33,8 +33,28 @@ class StatTracker
 
   end
 
+  # def parse_teams#(file_path)
+  #   # @team_storage = TeamStorage.new
+  #   @stat_tracker = StatTracker.from_csv(locations)
+  #   CSV.foreach(file_path, {headers: true, header_converters: :symbol}) do |team_info|
+  #   @teams = @stat_tracker.add_team(Team.new({:team_id => team_info[0], :franchiseid => team_info[1], :shortname => (team_info[2]),
+  #         :teamname => team_info[3], :abbreviation => team_info[4], :link => team_info[5]}))
+  #   end
+  #   @teams
+  # end
+
+  def self.from_csv(locations)
+    # require 'pry'; binding.pry
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams(locations[:teams])
+    stat_tracker.parse_game_teams(locations[:game_teams])
+    stat_tracker.parse_games(locations[:games])
+    return stat_tracker
+  end
+
   def parse_teams(file_path)
     @team_storage = TeamStorage.new
+    # @stat_tracker = StatTracker.from_csv(locations)
     CSV.foreach(file_path, {headers: true, header_converters: :symbol}) do |team_info|
     @teams = @team_storage.add_team(Team.new({:team_id => team_info[0], :franchiseid => team_info[1], :shortname => (team_info[2]),
           :teamname => team_info[3], :abbreviation => team_info[4], :link => team_info[5]}))
