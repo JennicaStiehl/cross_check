@@ -128,14 +128,14 @@ module GameStats
     end
     season_with_fewest_games.to_i
   end
-  
+
   def count_of_games_by_season
     count_of_games_by_season = {}
     total_games_by_season = @games.values.group_by do |game|
       game.season
     end
     total_games_by_season.keys.each do |season|
-      count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
+      count_of_games_by_season.store(season.to_s, total_games_by_season[season].count)
     end
     count_of_games_by_season
   end

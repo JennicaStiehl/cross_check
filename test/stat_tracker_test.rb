@@ -6,7 +6,7 @@ require './lib/game_team'
 require './lib/team_storage'
 require './lib/game_storage'
 require './lib/game_team_storage'
-require './lib/game_stats_module'
+require './lib/game_stats'
 
 class StatTrackerTest < Minitest::Test
 
@@ -172,7 +172,7 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_get_count_of_games_by_season
     # skip
 
-    assert_equal ({20122013 => 5}), @stat_tracker.count_of_games_by_season
+    assert_equal ({"20122013" => 5}), @stat_tracker.count_of_games_by_season
   end
 
   def test_it_can_get_count_of_teams
@@ -360,7 +360,7 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_calculate_average_win_percentage
     # skip
 
-    assert_equal 16.67, @stat_tracker.average_win_percentage("3")
+    assert_equal 0.17, @stat_tracker.average_win_percentage("3")
   end
 
   def test_it_can_sum_goals_scored
@@ -526,7 +526,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
-    assert_equal ({20122013 => 4}), stat_tracker.average_goals_by_season
+    assert_equal ({"20122013" => 4}), stat_tracker.average_goals_by_season
   end
 
   def test_to_create_game_teams_variable
