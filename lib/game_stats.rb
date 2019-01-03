@@ -163,7 +163,6 @@ module GameStats
     venues = []
     @games.each do |game|
       venues << game[1].venue
-      # binding.pry
     end
     venues
   end
@@ -174,7 +173,6 @@ module GameStats
     sort_games_by_venue.each do |venue|
       most_popular_venue[venue] += 1
     end
-    # binding.pry
     most_popular_venue
   end
 
@@ -189,10 +187,8 @@ module GameStats
   def least_popular_venue
     unpopular_venue_array = []
     unpopular_venue_array = order_games_by_venue.min_by do |key, value|
-      # binding.pry
       value
     end
-    # binding.pry
     unpopular_venue_array[0]
   end
 

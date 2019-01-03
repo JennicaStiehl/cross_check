@@ -225,12 +225,6 @@ module GameTeamStats
     return average_win_percentage.round(2)
   end
 
-  # def average_win_percentage(team_id)
-  #   count_of_games = wins(@games, team_id) + losses(@games, team_id)
-  #   count_of_wins = wins(@games, team_id)
-  #   (count_of_wins.to_f / count_of_games.to_f).round(2)
-  # end
-
   def sort_teams_by_team_id
     team_id_array =[]
     @game_teams.values.each do |game|

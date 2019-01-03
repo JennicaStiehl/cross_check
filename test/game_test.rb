@@ -1,7 +1,7 @@
 require './test/test_helper'
 require './lib/game'
 require './lib/stat_tracker'
-require './lib/game_stats_module'
+require './lib/game_stats'
 
 class GameTest < Minitest::Test
 
