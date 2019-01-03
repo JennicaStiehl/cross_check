@@ -128,7 +128,6 @@ module GameTeamStats
     lost_games_for_team = @game_team_storage.game_teams.values.select do |game_team|
       game_team.team_id == team_id && game_team.won == "FALSE"
     end
-
     lost_games_for_team.each do |losing_team|
         opponent_for_team = @game_team_storage.game_teams.values.select do |game_team|
           game_team.team_id != team_id && game_team.game_id == losing_team.game_id
@@ -206,6 +205,12 @@ module GameTeamStats
     average_win_percentage = total_wins.to_f / total_games.to_f
     return average_win_percentage.round(2)
   end
+
+  # def average_win_percentage(team_id)
+  #   count_of_games = wins(@games, team_id) + losses(@games, team_id)
+  #   count_of_wins = wins(@games, team_id)
+  #   (count_of_wins.to_f / count_of_games.to_f).round(2)
+  # end
 
   def sort_teams_by_team_id
     team_id_array =[]
