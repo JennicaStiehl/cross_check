@@ -492,7 +492,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
-    assert_equal ({"3" => 2, "6" => 4, "5" => 3}), stat_tracker.average_team_goals_across_all_seasons
+    assert_equal ({"3" => 2.0, "6" => 4.67, "5" => 3.75}), stat_tracker.average_team_goals_across_all_seasons
   end
 
   def test_it_can_calculate_best_offense

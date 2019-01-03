@@ -1,4 +1,4 @@
-# require 'pry'
+require 'pry'
 require_relative './team'
 require_relative './team_storage'
 require_relative './stat_tracker'
@@ -16,8 +16,19 @@ module TeamStats
     @team_storage.teams.count
   end
 
+  # def best_offense
+  #   team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.max)
+  #   binding.pry
+  #   get_team_name_from_id(team_id)
+  # end
+
+
   def best_offense
-    team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.max)
+    max_value = average_team_goals_across_all_seasons.values.max_by do |value|
+      value
+    end
+    team_id = average_team_goals_across_all_seasons.key(max_value)
+    # binding.pry
     get_team_name_from_id(team_id)
   end
 

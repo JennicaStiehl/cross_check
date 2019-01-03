@@ -227,7 +227,7 @@ module GameTeamStats
   def add_goals_to_team_to_goals_hash
     create_team_to_goals_hash
     @game_teams.values.each do |game|
-      @team_to_goals_hash[game.team_id] += game.goals.to_i
+      @team_to_goals_hash[game.team_id] += game.goals.to_f
     end
     @team_to_goals_hash
   end
@@ -253,7 +253,7 @@ module GameTeamStats
     add_games_to_games_played_by_team
     average_team_goals_across_all_seasons = {}
     @team_to_goals_hash.each do |team_id, goals|
-      average_team_goals_across_all_seasons[team_id] = (goals / @games_played_by_team[team_id])
+      average_team_goals_across_all_seasons[team_id] = (goals / @games_played_by_team[team_id]).round(2)
     end
     average_team_goals_across_all_seasons
   end
