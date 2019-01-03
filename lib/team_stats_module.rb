@@ -1,7 +1,7 @@
-require 'pry'
-require './lib/team'
-require './lib/team_storage'
-require './lib/stat_tracker'
+# require 'pry'
+require_relative './team'
+require_relative './team_storage'
+require_relative './stat_tracker'
 
 module TeamStats
 

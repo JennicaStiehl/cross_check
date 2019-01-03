@@ -1,4 +1,4 @@
-require './lib/storage'
+# require_relative './storage'
 
 class GameTeamStorage #< Storage
   attr_accessor   :game_team_storage,
@@ -12,7 +12,7 @@ class GameTeamStorage #< Storage
   def add_game_team(game_team)
     # @game_teams[game_team.team_id.to_i] = game_team
     @game_teams[game_team.game_id + game_team.team_id] = game_team
-    
+
     @game_teams
   end
 

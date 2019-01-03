@@ -1,7 +1,7 @@
-require 'pry'
-require './lib/game_team'
-require './lib/game_team_storage'
-require './lib/stat_tracker'
+# require 'pry'
+require_relative './game_team'
+require_relative './game_team_storage'
+require_relative './stat_tracker'
 
 module GameTeamStats
 
@@ -104,6 +104,7 @@ module GameTeamStats
   def team_record(team_id)
     @game_team_storage.game_teams.values.select do |game_team|
        game_team.team_id == team_id
+   end
   end
 
   def most_goals_scored(team_id)

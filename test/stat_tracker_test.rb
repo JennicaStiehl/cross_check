@@ -25,10 +25,12 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_works_for_sample_team_info_file
+    # skip
     assert_equal "NJD", @stat_tracker.teams[1].abbreviation
   end
 
   def test_it_works_for_sample_game_info
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -36,10 +38,12 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_works_for_sample_game_team_info
+    # skip
     assert_equal "away", @stat_tracker.game_teams.values[2].HoA
   end
 
   def test_for_highest_total_score
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -47,6 +51,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_highest_score
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -54,6 +59,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_biggest_blowout
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -61,6 +67,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_biggest_team_blowout
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -68,6 +75,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_best_season
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -75,6 +83,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_worst_season
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -82,6 +91,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_count_wins_by_season
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -89,6 +99,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_percentage_wins
+    # skip
     stat_tracker = StatTracker.new
     # get_game_info =
     stat_tracker.parse_games('./data/sample_game.csv')
@@ -105,32 +116,37 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_get_team_name_from_id
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
     assert_equal "Rangers", stat_tracker.get_team_name_from_id("3")
   end
-
+  #
   def test_it_can_find_highest_scoring_home_team
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
     assert_equal "Bruins", stat_tracker.highest_scoring_home_team
   end
-
-
+  #
+  #
   def test_it_can_calculate_percentage_home_wins
+    # skip
 
     assert_equal 0.8, @stat_tracker.percentage_home_wins
   end
-
+  #
   def test_it_can_calculate_percentage_vistor_wins
+    # skip
     assert_equal 0.2, @stat_tracker.percentage_visitor_wins
   end
-
+  #
   def test_it_can_calculate_season_with_most_games
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -138,6 +154,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_create_hash_by_season
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -145,6 +162,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_season_with_fewest_games
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -152,16 +170,19 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_get_count_of_games_by_season
+    # skip
 
     assert_equal ({20122013 => 5}), @stat_tracker.count_of_games_by_season
   end
 
   def test_it_can_get_count_of_teams
+    # skip
 
     assert_equal 7, @stat_tracker.count_of_teams
   end
 
   def test_it_can_group_game_teams_by_team_id
+    # skip
 
     assert_equal 3, @stat_tracker.group_game_teams_by_team_id.keys.count
     #count number of team_ids
@@ -170,11 +191,13 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_calculates_game_win_percentage
+    # skip
 
     assert_equal ({"3"=>0.16666666666666666, "6"=>1.0, "5"=>0.75}), @stat_tracker.game_win_percentage
   end
 
   def test_it_can_calculate_the_winningest_team
+    # skip
 
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
@@ -208,12 +231,13 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_best_fans
+    # skip
 
     assert_equal "Bruins", @stat_tracker.best_fans
   end
 
   def test_it_can_calculate_worst_fans
-    skip
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/worst_fans_sample_game_teams_stats.csv')
     stat_tracker.parse_games('./data/worst_fans_sample_game.csv')
@@ -223,6 +247,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_find_lowest_scoring_home_team
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -232,6 +257,7 @@ class StatTrackerTest < Minitest::Test
 
 
   def test_it_can_find_lowest_scoring_visitor
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -240,6 +266,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_find_most_goals_in_a_game
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -248,6 +275,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_find_least_goals_in_a_game
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -256,6 +284,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_represent_head_to_head
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -265,6 +294,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_count_losses
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
     stat_tracker.parse_teams('./data/sample_team_info.csv')
@@ -273,6 +303,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_count_wins
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
@@ -281,12 +312,14 @@ class StatTrackerTest < Minitest::Test
 
 
   def test_for_most_popular_venue
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
     assert_equal "United Center", stat_tracker.most_popular_venue
   end
 
   def test_for_least_popular_venue
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
@@ -294,6 +327,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_average_goals_per_game
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
@@ -306,26 +340,31 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_find_most_goals_scored
+    # skip
 
     assert_equal 6, @stat_tracker.most_goals_scored("6")
   end
 
   def test_it_can_find_fewest_goals_scored
+    # skip
 
     assert_equal 0, @stat_tracker.fewest_goals_scored("3")
   end
 
   def test_it_can_calculate_worst_loss
+    # skip
 
     assert_equal 5, @stat_tracker.worst_loss("3")
   end
 
   def test_it_can_calculate_average_win_percentage
+    # skip
 
     assert_equal 16.67, @stat_tracker.average_win_percentage("3")
   end
 
   def test_it_can_sum_goals_scored
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -335,6 +374,7 @@ class StatTrackerTest < Minitest::Test
 
 
   def test_it_can_sum_goals_against
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -343,6 +383,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_sum_wins
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -351,6 +392,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_count_games
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -397,6 +439,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_list_seasons
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
@@ -405,6 +448,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_sort_teams_by_team_id
+    # skip
   stat_tracker = StatTracker.new
   stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -412,6 +456,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_create_a_team_to_goals_hash
+    # skip
   stat_tracker = StatTracker.new
   stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -419,6 +464,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_add_goals_to_team_to_goals_hash
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -426,6 +472,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_create_a_hash_of_number_of_games_played
+    # skip
   stat_tracker = StatTracker.new
   stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -433,6 +480,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_add_games_to_games_played_by_team_hash
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -440,6 +488,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_average_team_goals_across_all_seasons
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
 
@@ -447,6 +496,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_best_offense
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
@@ -455,6 +505,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_calculate_worst_offense
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/sample_game_teams_stats.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
@@ -463,6 +514,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_average_goals_per_game_per_season
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
@@ -470,6 +522,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_average_goals_by_season
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
@@ -477,6 +530,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_to_create_game_teams_variable
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
 
@@ -484,6 +538,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_to_create_game_teams_hash_for_best_worst_defense
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
 
@@ -491,6 +546,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_populate_game_teams_hash_with_scores
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
 
@@ -498,6 +554,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_best_defense
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/team_info.csv')
     stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
@@ -506,6 +563,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_worst_defense
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/sample_team_info.csv')
     stat_tracker.parse_game_teams('./data/shorter_sample_game_teams_stats.csv')
@@ -537,15 +595,16 @@ class StatTrackerTest < Minitest::Test
     assert_equal ["6", "3", "12", "2", "14", "10", "1", "8"], stat_tracker.create_team_id_array(stat_tracker.games, "20122013")
   end
 
-  def test_that_team_has_pre_and_regular_season_games
-    skip
-    stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
-
-    assert_equal [], stat_tracker.check_for_pre_and_regular_season_games("20122013")
-  end
+  # def test_that_team_has_pre_and_regular_season_games
+  #   skip
+  #   stat_tracker = StatTracker.new
+  #   stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
+  #
+  #   assert_equal [], stat_tracker.check_for_pre_and_regular_season_games("20122013")
+  # end
 
   def test_for_biggest_bust
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/team_info.csv')
     stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
@@ -554,6 +613,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_for_biggest_surprise
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/team_info.csv')
     stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
@@ -562,6 +622,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_get_team_id_from_team_name
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/team_info.csv')
 
@@ -596,6 +657,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_to_create_array_of_wins
+    # skip
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/team_info.csv')
     stat_tracker.parse_games('./data/sample_game_with_pre_reg_season_stats.csv')
