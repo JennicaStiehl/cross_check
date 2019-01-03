@@ -674,4 +674,11 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Maple Leafs", stat_tracker.favorite_opponent("Rangers")
   end
 
+  def test_it_can_return_team_info
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
+
+    expected = ({:teamid=>"1", :franchiseid=>"23", :shortname=>"New Jersey", :teamname=>"Devils", :abbreviation=>"NJD", :link=>"/api/v1/teams/1"})
+    assert_equal expected, stat_tracker.team_info(1)
+  end
 end

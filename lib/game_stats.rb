@@ -5,20 +5,24 @@ require_relative './stat_tracker'
 
 module GameStats
 
+  def goal_differiential(away_goals, home_goals)
+    (away_goals.to_i - home_goals.to_i).abs
+  end
+
   def biggest_blowout#win; maybe game_team & use win/lose column
     blowout = @games.values.max_by do |game|
-      (game.away_goals.to_i - game.home_goals.to_i).abs
+      goal_differiential(game.away_goals, game.home_goals)
     end
-    (blowout.away_goals.to_i - blowout.home_goals.to_i).abs
+    goal_differiential(blowout.away_goals,blowout.home_goals)
   end
 
   def biggest_team_blowout(team_id)#win
     blowout = @games.values.max_by do |game|
-      if game.home_team_id == team_id || game.away_team_id == team_id
-        (game.away_goals.to_i - game.home_goals.to_i).abs
+      if game.home_team_id.to_i == team_id.to_i || game.away_team_id.to_i == team_id.to_i
+        goal_differiential(game.away_goals, game.home_goals)
       end
     end
-    (blowout.away_goals.to_i - blowout.home_goals.to_i).abs
+    goal_differiential(blowout.away_goals,blowout.home_goals)
   end
 
   def best_season(collection = @games, team_id)

@@ -6,9 +6,9 @@ require_relative './game_team'
 require_relative './team_storage'
 require_relative './game_storage'
 require_relative './game_team_storage'
-require_relative './game_stats_module'
-require_relative './game_team_stats_module'
-require_relative './team_stats_module'
+require_relative './game_stats'
+require_relative './game_team_stats'
+require_relative './team_stats'
 
 class StatTracker
 
