@@ -25,21 +25,17 @@ module TeamStats
     get_team_name_from_id(team_id)
   end
 
-  # def seasonal_summary(team_id)
-  #   season_summary(team_id, all_seasons)
-  # end
-
   def team_info(id)
+    team = @teams[id.to_i]
+
     team_info = {}
-    team_values = @teams.find do |team|
-      team[0] == id.to_i
-    end
-    team_info[team_values[1].teamid] = team_values[1].teamid
-    team_info[team_values[1].franchiseId] = team_values[1].franchiseId
-    team_info[team_values[1].shortName] = team_values[1].shortName
-    team_info[team_values[1].teamName] = team_values[1].teamName
-    team_info[team_values[1].abbreviation] = team_values[1].abbreviation
-    team_info[team_values[1].link] = team_values[1].link
+    team_info["abbreviation"] = team.abbreviation
+    team_info["franchise_id"] = team.franchiseId
+    team_info["link"] = team.link
+    team_info["short_name"] = team.shortName
+    team_info["team_id"] = team.teamid
+    team_info["team_name"] = team.teamName
+
     team_info
   end
 

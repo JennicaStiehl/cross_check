@@ -338,7 +338,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
-    assert_equal 4.98, stat_tracker.avg_goals_per_game
+    assert_equal 4.98, stat_tracker.average_goals_per_game
   end
 
   def test_it_can_get_a_team_record
@@ -514,7 +514,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/longer_sample_game.csv')
 
-    assert_equal ({"20122013" => 4}), stat_tracker.average_goals_by_season
+    assert_equal ({"20122013" => 4.98}), stat_tracker.average_goals_by_season
   end
 
   def test_to_create_game_teams_variable
@@ -666,7 +666,8 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_teams('./data/sample_team_info.csv')
 
-    expected = ({:teamid=>"1", :franchiseid=>"23", :shortname=>"New Jersey", :teamname=>"Devils", :abbreviation=>"NJD", :link=>"/api/v1/teams/1"})
+    # expected = ({"abbreviation" => "NJD","teamid" => "1", "franchiseid" => "23", "shortname" => "", "teamname" => "Devils",  "link" =>"/api/v1/teams/1"})
+    expected = ({"abbreviation"=>"NJD", "franchise_id"=>"23", "link"=>"/api/v1/teams/1", "short_name"=>"New Jersey", "team_id"=>"1", "team_name"=>"Devils"})
     assert_equal expected, stat_tracker.team_info(1)
   end
 end
