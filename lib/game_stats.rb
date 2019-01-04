@@ -55,17 +55,13 @@ end
     wins.key(best)
   end
 
-  # def worst_season(collection = @games, team_id)
-  #   wins = wins_by_season(collection, team_id)
-  #   worst = wins.min_by do |season, num_wins|
-  #     num_wins
-  #   end
-  #   worst = worst[1]
-  #   wins.key(worst)
-  # end
-
-  def worst_season
-
+  def worst_season(collection = @games, team_id)
+    wins = wins_by_season(collection, team_id)
+    worst = wins.min_by do |season, num_wins|
+      num_wins
+    end
+    worst = worst[1]
+    wins.key(worst)
   end
 
   def wins(collection = @games, team_id)
@@ -160,7 +156,7 @@ end
       game.season
     end
     total_games_by_season.keys.each do |season|
-      count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
+      count_of_games_by_season.store(season.to_s, total_games_by_season[season].count)
     end
     count_of_games_by_season
   end
@@ -443,7 +439,8 @@ end
   def average_goals_by_season
     average_goals_by_season = {}
     count_of_games_by_season.each do |season, count|
-      average_goals_by_season[season] = (average_goals_per_game_per_season[season.to_s].to_f / count.to_f).round(2)
+      # binding.pry
+      average_goals_by_season[season.to_s] = (average_goals_per_game_per_season[season.to_s].to_f / count.to_f).round(2)
     end
     average_goals_by_season
   end

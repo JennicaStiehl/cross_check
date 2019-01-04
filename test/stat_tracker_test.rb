@@ -140,18 +140,19 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/game.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Bruins", stat_tracker.highest_scoring_home_team
+    assert_equal "Golden Knights", stat_tracker.highest_scoring_home_team
   end
-  #
-  #
+
   def test_it_can_calculate_percentage_home_wins
+
     assert_equal 0.8, @stat_tracker.percentage_home_wins
   end
-  #
+
   def test_it_can_calculate_percentage_vistor_wins
+
     assert_equal 0.2, @stat_tracker.percentage_visitor_wins
   end
-  #
+
   def test_it_can_calculate_season_with_most_games
     # skip
     stat_tracker = StatTracker.new
@@ -178,19 +179,16 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_get_count_of_games_by_season
     # skip
-
     assert_equal ({"20122013" => 5}), @stat_tracker.count_of_games_by_season
   end
 
   def test_it_can_get_count_of_teams
     # skip
-
     assert_equal 7, @stat_tracker.count_of_teams
   end
 
   def test_it_can_group_game_teams_by_team_id
     # skip
-
     assert_equal 3, @stat_tracker.group_game_teams_by_team_id.keys.count
     #count number of team_ids
     assert_equal 6, @stat_tracker.group_game_teams_by_team_id["3"].count
@@ -199,13 +197,11 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_calculates_game_win_percentage
     # skip
-
     assert_equal ({"3"=>0.16666666666666666, "6"=>1.0, "5"=>0.75}), @stat_tracker.game_win_percentage
   end
 
   def test_it_can_calculate_the_winningest_team
     # skip
-
     assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
@@ -317,7 +313,6 @@ class StatTrackerTest < Minitest::Test
     assert_equal 1, stat_tracker.wins("3")
   end
 
-
   def test_for_most_popular_venue
     # skip
     stat_tracker = StatTracker.new
@@ -378,7 +373,6 @@ class StatTrackerTest < Minitest::Test
     expected = 16
     assert_equal expected, stat_tracker.goals_scored("3","20122013")
   end
-
 
   def test_it_can_sum_goals_against
     # skip
