@@ -242,34 +242,71 @@ module GameStats
   end
 
   def lowest_scoring_home_team
-    hash = get_home_team_score_hash
-    team_id = hash.key(hash.values.min)
-    get_team_name_from_id(team_id)
-    # score = @games.values.min_by { |game| game.home_goals.to_i}
-    # get_team_name_from_id(score.home_team_id)
+    hash = Hash.new(0)
+    @games.values.each do |game|
+      hash[game.home_team_id] = [0, 0]
+    end
+    @games.values.each do |game|
+      counter = hash[game.home_team_id]
+      starting_value = counter[0]
+      game_counter = counter[1]
+      counter[0] = (starting_value += game.home_goals.to_i)
+      game_counter += 1
+      counter[1] = game_counter
+      hash[game.home_team_id][0] = counter[0]
+      hash[game.home_team_id][1] = counter[1]
+    end
+    home = Hash.new
+    hash.each do |teamid, game_info|
+      variable = game_info[0].to_f / game_info[1].to_f
+      home[teamid] = variable.round(2)
+    end
+    home_team = home.sort_by do |teamid, average|
+      average
+    end
+    get_team_name_from_id(home_team.first[0])
   end
 
   def get_away_team_score_hash
     hash = Hash.new(0)
     @games.values.each do |game|
-      hash[game.away_team_id] = game.away_goals.to_i
+      hash[game.away_team_id] = [0, 0]
+    end
+    @games.values.each do |game|
+      counter = hash[game.away_team_id]
+      starting_value = counter[0]
+      game_counter = counter[1]
+      counter[0] = (starting_value += game.away_goals.to_i)
+      game_counter += 1
+      counter[1] = game_counter
+      hash[game.away_team_id][0] = counter[0]
+      hash[game.away_team_id][1] = counter[1]
     end
     hash
   end
 
   def lowest_scoring_visitor
-    hash = get_away_team_score_hash
-    team_id = hash.key(hash.values.min)
-    get_team_name_from_id(team_id)
-    # score = @games.values.min_by { |game| game.away_goals.to_i}
-    # get_team_name_from_id(score.away_team_id)
+    visitors = Hash.new
+    get_away_team_score_hash.each do |teamid, game_info|
+      variable = game_info[0].to_f / game_info[1].to_f
+      visitors[teamid] = variable.round(2)
+    end
+    visiting_team = visitors.sort_by do |teamid, average|
+      average
+    end
+    get_team_name_from_id(visiting_team.first[0])
   end
 
   def highest_scoring_visitor
-    hash = get_away_team_score_hash
-    team_id = hash.key(hash.values.max)
-    get_team_name_from_id(team_id)    # score = @games.values.max_by { |game| game.away_goals.to_i}
-    # get_team_name_from_id(score.away_team_id)
+    visitors = Hash.new
+    get_away_team_score_hash.each do |teamid, game_info|
+      variable = game_info[0].to_f / game_info[1].to_f
+      visitors[teamid] = variable.round(2)
+    end
+    visiting_team = visitors.sort_by do |teamid, average|
+      average
+    end
+    get_team_name_from_id(visiting_team.last[0])
   end
 
 
