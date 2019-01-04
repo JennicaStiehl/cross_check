@@ -140,7 +140,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/game.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Bruins", stat_tracker.highest_scoring_home_team
+    assert_equal "Golden Knights", stat_tracker.highest_scoring_home_team
   end
 
   def test_it_can_calculate_percentage_home_wins
