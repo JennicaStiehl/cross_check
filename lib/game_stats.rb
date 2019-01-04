@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 require_relative './game'
 require_relative './game_storage'
 require_relative './stat_tracker'
@@ -35,15 +35,16 @@ module GameStats
     blowout_1
   end
 
-  def biggest_team_blowout(team_id)#win
+def biggest_team_blowout(team_id)
+  blowout_1 = 0
+  @teams.values.each do |team|
     blowout = @games.values.max_by do |game|
-      # if game.home_team_id.to_i == team_id.to_i || game.away_team_id.to_i == team_id.to_i
       goal_differiential(game.away_goals, game.home_goals, team_id)
-      # binding.pry
-      # end
     end
-    goal_differiential(blowout.away_goals,blowout.home_goals, team_id)
+    blowout_1 = goal_differiential(blowout.away_goals,blowout.home_goals, team_id)
   end
+  blowout_1
+end
 
   def best_season(collection = @games, team_id)
     wins = wins_by_season(collection, team_id)
@@ -159,7 +160,7 @@ module GameStats
       game.season
     end
     total_games_by_season.keys.each do |season|
-      count_of_games_by_season.store(season.to_s, total_games_by_season[season].count)
+      count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
     end
     count_of_games_by_season
   end
@@ -246,34 +247,71 @@ module GameStats
   end
 
   def lowest_scoring_home_team
-    hash = get_home_team_score_hash
-    team_id = hash.key(hash.values.min)
-    get_team_name_from_id(team_id)
-    # score = @games.values.min_by { |game| game.home_goals.to_i}
-    # get_team_name_from_id(score.home_team_id)
+    hash = Hash.new(0)
+    @games.values.each do |game|
+      hash[game.home_team_id] = [0, 0]
+    end
+    @games.values.each do |game|
+      counter = hash[game.home_team_id]
+      starting_value = counter[0]
+      game_counter = counter[1]
+      counter[0] = (starting_value += game.home_goals.to_i)
+      game_counter += 1
+      counter[1] = game_counter
+      hash[game.home_team_id][0] = counter[0]
+      hash[game.home_team_id][1] = counter[1]
+    end
+    home = Hash.new
+    hash.each do |teamid, game_info|
+      variable = game_info[0].to_f / game_info[1].to_f
+      home[teamid] = variable.round(2)
+    end
+    home_team = home.sort_by do |teamid, average|
+      average
+    end
+    get_team_name_from_id(home_team.first[0])
   end
 
   def get_away_team_score_hash
     hash = Hash.new(0)
     @games.values.each do |game|
-      hash[game.away_team_id] = game.away_goals.to_i
+      hash[game.away_team_id] = [0, 0]
+    end
+    @games.values.each do |game|
+      counter = hash[game.away_team_id]
+      starting_value = counter[0]
+      game_counter = counter[1]
+      counter[0] = (starting_value += game.away_goals.to_i)
+      game_counter += 1
+      counter[1] = game_counter
+      hash[game.away_team_id][0] = counter[0]
+      hash[game.away_team_id][1] = counter[1]
     end
     hash
   end
 
   def lowest_scoring_visitor
-    hash = get_away_team_score_hash
-    team_id = hash.key(hash.values.min)
-    get_team_name_from_id(team_id)
-    # score = @games.values.min_by { |game| game.away_goals.to_i}
-    # get_team_name_from_id(score.away_team_id)
+    visitors = Hash.new
+    get_away_team_score_hash.each do |teamid, game_info|
+      variable = game_info[0].to_f / game_info[1].to_f
+      visitors[teamid] = variable.round(2)
+    end
+    visiting_team = visitors.sort_by do |teamid, average|
+      average
+    end
+    get_team_name_from_id(visiting_team.first[0])
   end
 
   def highest_scoring_visitor
-    hash = get_away_team_score_hash
-    team_id = hash.key(hash.values.max)
-    get_team_name_from_id(team_id)    # score = @games.values.max_by { |game| game.away_goals.to_i}
-    # get_team_name_from_id(score.away_team_id)
+    visitors = Hash.new
+    get_away_team_score_hash.each do |teamid, game_info|
+      variable = game_info[0].to_f / game_info[1].to_f
+      visitors[teamid] = variable.round(2)
+    end
+    visiting_team = visitors.sort_by do |teamid, average|
+      average
+    end
+    get_team_name_from_id(visiting_team.last[0])
   end
 
 
@@ -351,6 +389,14 @@ module GameStats
     end
   end
 
+  def average_goals_scored(team_id = "3", the_season = all_seasons)
+    goals_against(team_id = "3", the_season = all_seasons).to_f / total_game_count(team_id = "3", the_season = all_seasons).to_f
+  end
+
+  def average_goals_against(team_id = "3", the_season = all_seasons)
+    goals_against(team_id = "3", the_season = all_seasons).to_f / total_game_count(team_id = "3", the_season = all_seasons).to_f
+  end
+
   def win_percentage_helper(team_id = "3", the_season = all_seasons)
     if total_game_count(team_id, the_season) > 0
       (total_wins(team_id, the_season).to_f / total_game_count(team_id, the_season)).round(2)
@@ -360,31 +406,27 @@ module GameStats
   end
 
   def season_summary(team_id = "3", the_season = all_seasons)
-    #season_summary	A hash with two keys
-    #(:preseason, and :regular_season) each pointing to a hash with the keys
-    #:win_percentage, :goals_scored, and :goals_against
     summary = {}
     seasons = []
-    stats_1 = Hash.new(0)
     seasons << the_season
     s = seasons.flatten.sort
 
     s.each do |season|
-    @games.values.inject(Hash.new(0)) do |stats, game|
-
-        stats[game.type] = {win_percentage: win_percentage_helper(team_id = "3", season),
+    summary = @games.values.inject(Hash.new(0)) do |stats, game|
+      game_type = if game.type == 'R'
+        :regular_season
+      elsif game.type = 'P'
+        :preseason
+      end
+        stats[game_type] = {win_percentage: win_percentage_helper(team_id = "3", season),
                             goals_scored: goals_scored(team_id, season),
                             goals_against: goals_against(team_id, season)
                             }
-        summary[season] = stats
-        # binding.pry
-        # stats
+        stats
       end
       summary
-
     end
     summary
-    # stats_1
   end
 
   def average_goals_per_game_per_season
@@ -503,7 +545,6 @@ module GameStats
 
   def array_of_opponents(collection = @games, teamid, input)
     array_of_opponents = []
-    # binding.pry
     input.each do |game|
       if game.home_team_id == teamid
         array_of_opponents << game.away_team_id.to_i
@@ -524,7 +565,6 @@ module GameStats
     rival_team_id_hash_value = rival_team_id_hash.values.max
     rival_team_id = rival_team_id_hash.key(rival_team_id_hash_value).to_s
     rival_team_name = ""
-    # binding.pry
     @teams.values.each do |team|
       if team.teamid == rival_team_id
         rival_team_name = team.teamName

@@ -72,15 +72,16 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_teams('./data/sample_team_info.csv')
     stat_tracker.parse_games('./data/sample_game.csv')
 
-    assert_equal 3, stat_tracker.biggest_blowout
+    assert_equal 0, stat_tracker.biggest_blowout
   end
 
   def test_it_can_calculate_biggest_team_blowout
     # skip
     stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
     stat_tracker.parse_games('./data/sample_game.csv')
 
-    assert_equal 10, stat_tracker.biggest_team_blowout("3")
+    assert_equal 3, stat_tracker.biggest_team_blowout("6")
   end
 
   def test_it_can_calculate_best_season
@@ -118,10 +119,10 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_find_highest_scoring_visitor
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game.csv')
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Bruins", stat_tracker.highest_scoring_visitor
+    assert_equal "Capitals", stat_tracker.highest_scoring_visitor
   end
 
   def test_it_can_get_team_name_from_id
@@ -258,17 +259,17 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/game.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Rangers", stat_tracker.lowest_scoring_home_team
+    assert_equal "Sabres", stat_tracker.lowest_scoring_home_team
   end
 
 
   def test_it_can_find_lowest_scoring_visitor
     # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game.csv')
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Rangers", stat_tracker.lowest_scoring_visitor
+    assert_equal "Sabres", stat_tracker.lowest_scoring_visitor
   end
 
   def test_it_can_find_most_goals_in_a_game
@@ -411,11 +412,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    expected = ({"20122013"=>
-                  {"P"=>{
-                    :win_percentage=>0.57,
-                    :goals_scored=>16,
-                    :goals_against=>12}}})
+    expected = ({:preseason=>{:win_percentage=>0.57, :goals_scored=>16, :goals_against=>12}})
     assert_equal expected, stat_tracker.season_summary("3","20122013")
   end
 
@@ -424,24 +421,9 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game_seasons.csv')
 
-    expected = ({"20122013"=>{"P"=>
-      {:win_percentage=>0.57,
-        :goals_scored=>16,
-        :goals_against=>12}},
-        "20142015"=>{"P"=>
-          {:win_percentage=>0.0,
-            :goals_scored=>0,
-            :goals_against=>0}},
-            "20152016"=>{"P"=>
-              {:win_percentage=>0.25,
-                :goals_scored=>7,
-                :goals_against=>15}},
-                "20162017"=>{"P"=>
-                  {:win_percentage=>0.0,
-                    :goals_scored=>0,
-                    :goals_against=>0}}}
+    expected = ({"20122013"=>{:preseason=>{:average_goals_against=>0.0, :average_goals_scored=>0.0, :total_goals_against=>12, :total_goals_scored=>16, :win_percentage=>0.57}}, "20142015"=>{:preseason=>{:average_goals_against=>0.0, :average_goals_scored=>0.0, :total_goals_against=>0, :total_goals_scored=>0, :win_percentage=>0.0}}, "20152016"=>{:preseason=>{:average_goals_against=>0.0, :average_goals_scored=>0.0, :total_goals_against=>15, :total_goals_scored=>7, :win_percentage=>0.25}}, "20162017"=>{:preseason=>{:average_goals_against=>0.0, :average_goals_scored=>0.0, :total_goals_against=>0, :total_goals_scored=>0, :win_percentage=>0.0}}}
                     )
-    assert_equal expected, stat_tracker.seasonal_summary("3")
+    assert_equal expected, stat_tracker.seasonal_summary("18")
   end
 
   def test_it_can_list_seasons
