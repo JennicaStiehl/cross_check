@@ -386,7 +386,7 @@ end
   end
 
   def average_goals_scored(team_id = "3", the_season = all_seasons)
-    goals_against(team_id = "3", the_season = all_seasons).to_f / total_game_count(team_id = "3", the_season = all_seasons).to_f
+    goals_scored(team_id = "3", the_season = all_seasons).to_f / total_game_count(team_id = "3", the_season = all_seasons).to_f
   end
 
   def average_goals_against(team_id = "3", the_season = all_seasons)
