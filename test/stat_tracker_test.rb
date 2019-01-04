@@ -6,7 +6,7 @@ require './lib/game_team'
 require './lib/team_storage'
 require './lib/game_storage'
 require './lib/game_team_storage'
-require './lib/game_stats_module'
+require './lib/game_stats'
 
 class StatTrackerTest < Minitest::Test
 
@@ -58,9 +58,18 @@ class StatTrackerTest < Minitest::Test
     assert_equal 6, stat_tracker.highest_score
   end
 
+  def test_it_can_get_goal_diff
+    stat_tracker = StatTracker.new
+    stat_tracker.parse_games('./data/sample_game.csv')
+    assert_equal 3, stat_tracker.goal_differiential("4", "7", "3")
+  end
+
+
+
   def test_it_can_calculate_biggest_blowout
     # skip
     stat_tracker = StatTracker.new
+    stat_tracker.parse_teams('./data/sample_team_info.csv')
     stat_tracker.parse_games('./data/sample_game.csv')
 
     assert_equal 3, stat_tracker.biggest_blowout
@@ -71,7 +80,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker = StatTracker.new
     stat_tracker.parse_games('./data/sample_game.csv')
 
-    assert_equal 3, stat_tracker.biggest_team_blowout("3")
+    assert_equal 10, stat_tracker.biggest_team_blowout("3")
   end
 
   def test_it_can_calculate_best_season
@@ -127,21 +136,18 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_find_highest_scoring_home_team
     # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game.csv')
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
 
     assert_equal "Bruins", stat_tracker.highest_scoring_home_team
   end
   #
   #
   def test_it_can_calculate_percentage_home_wins
-    # skip
-
     assert_equal 0.8, @stat_tracker.percentage_home_wins
   end
   #
   def test_it_can_calculate_percentage_vistor_wins
-    # skip
     assert_equal 0.2, @stat_tracker.percentage_visitor_wins
   end
   #
@@ -249,8 +255,8 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_find_lowest_scoring_home_team
     # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game.csv')
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
 
     assert_equal "Rangers", stat_tracker.lowest_scoring_home_team
   end

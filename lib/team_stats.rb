@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 require_relative './team'
 require_relative './team_storage'
 require_relative './stat_tracker'
@@ -16,19 +16,8 @@ module TeamStats
     @team_storage.teams.count
   end
 
-  # def best_offense
-  #   team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.max)
-  #   binding.pry
-  #   get_team_name_from_id(team_id)
-  # end
-
-
   def best_offense
-    max_value = average_team_goals_across_all_seasons.values.max_by do |value|
-      value
-    end
-    team_id = average_team_goals_across_all_seasons.key(max_value)
-    # binding.pry
+    team_id = average_team_goals_across_all_seasons.key(average_team_goals_across_all_seasons.values.max)
     get_team_name_from_id(team_id)
   end
 
@@ -46,12 +35,12 @@ module TeamStats
     team_values = @teams.find do |team|
       team[0] == id.to_i
     end
-    team_info[:teamid] = team_values[1].teamid
-    team_info[:franchiseid] = team_values[1].franchiseId
-    team_info[:shortname] = team_values[1].shortName
-    team_info[:teamname] = team_values[1].teamName
-    team_info[:abbreviation] = team_values[1].abbreviation
-    team_info[:link] = team_values[1].link
+    team_info[team_values[1].teamid] = team_values[1].teamid
+    team_info[team_values[1].franchiseId] = team_values[1].franchiseId
+    team_info[team_values[1].shortName] = team_values[1].shortName
+    team_info[team_values[1].teamName] = team_values[1].teamName
+    team_info[team_values[1].abbreviation] = team_values[1].abbreviation
+    team_info[team_values[1].link] = team_values[1].link
     team_info
   end
 end
