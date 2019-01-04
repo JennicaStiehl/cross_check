@@ -31,16 +31,50 @@ module TeamStats
   end
 
   def team_info(id)
+    team = @teams[id.to_i]
+
     team_info = {}
-    team_values = @teams.find do |team|
-      team[0] == id.to_i
-    end
-    team_info[team_values[1].teamid] = team_values[1].teamid
-    team_info[team_values[1].franchiseId] = team_values[1].franchiseId
-    team_info[team_values[1].shortName] = team_values[1].shortName
-    team_info[team_values[1].teamName] = team_values[1].teamName
-    team_info[team_values[1].abbreviation] = team_values[1].abbreviation
-    team_info[team_values[1].link] = team_values[1].link
+    team_info["abbreviation"] = team.abbreviation
+    team_info["franchise_id"] = team.franchiseId
+    team_info["link"] = team.link
+    team_info["short_name"] = team.shortName
+    team_info["team_id"] = team.teamid
+    team_info["team_name"] = team.teamName
+
     team_info
   end
+
+    # team_info[team_values[1].teamid] = team_values[1].teamid
+    # team_info[team_values[1].franchiseId] = team_values[1].franchiseId
+    # team_info[team_values[1].shortName] = team_values[1].shortName
+    # team_info[team_values[1].teamName] = team_values[1].teamName
+    # team_info[team_values[1].abbreviation] = team_values[1].abbreviation
+    # team_info[team_values[1].link] = team_values[1].link
+    # team_info
+  # end
+
+  # def team_info
+  #   team_info = {}
+  #   team_info[:teamid] = @teamid
+  #   team_info[:franchiseid] = @franchiseId
+  #   team_info[:shortname] = @shortName
+  #   team_info[:teamname] = @teamName
+  #   team_info[:abbreviation] = @abbreviation
+  #   team_info[:link] = @link
+  #   team_info
+  # end
+
+  # def team_info(id)
+  #   team_info = {}
+  #   team_values = @teams[id].find do |team|
+  #     team[0] == id.to_i
+  #   end
+  #   team_info[team_values[1].teamid] = team_values[1].teamid
+  #   team_info[team_values[1].franchiseId] = team_values[1].franchiseId
+  #   team_info[team_values[1].shortName] = team_values[1].shortName
+  #   team_info[team_values[1].teamName] = team_values[1].teamName
+  #   team_info[team_values[1].abbreviation] = team_values[1].abbreviation
+  #   team_info[team_values[1].link] = team_values[1].link
+  #   team_info
+  # end
 end

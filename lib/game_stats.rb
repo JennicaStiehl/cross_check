@@ -54,13 +54,17 @@ module GameStats
     wins.key(best)
   end
 
-  def worst_season(collection = @games, team_id)
-    wins = wins_by_season(collection, team_id)
-    worst = wins.min_by do |season, num_wins|
-      num_wins
-    end
-    worst = worst[1]
-    wins.key(worst)
+  # def worst_season(collection = @games, team_id)
+  #   wins = wins_by_season(collection, team_id)
+  #   worst = wins.min_by do |season, num_wins|
+  #     num_wins
+  #   end
+  #   worst = worst[1]
+  #   wins.key(worst)
+  # end
+
+  def worst_season
+
   end
 
   def wins(collection = @games, team_id)
@@ -221,10 +225,10 @@ module GameStats
       total_goals
   end
 
-  def avg_goals_per_game
+  def average_goals_per_game #avg_goals_per_game
     average_goals = 0.00
     average_goals = total_goals_per_game / @games.length.to_f
-    average_goals
+    average_goals.round(2)
   end
 
   def get_home_team_score_hash
@@ -397,7 +401,7 @@ module GameStats
   def average_goals_by_season
     average_goals_by_season = {}
     count_of_games_by_season.each do |season, count|
-      average_goals_by_season[season] = (average_goals_per_game_per_season[season.to_s] / count)
+      average_goals_by_season[season] = (average_goals_per_game_per_season[season.to_s].to_f / count.to_f).round(2)
     end
     average_goals_by_season
   end
