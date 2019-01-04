@@ -121,7 +121,7 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/game.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Bruins", stat_tracker.highest_scoring_visitor
+    assert_equal "Capitals", stat_tracker.highest_scoring_visitor
   end
 
   def test_it_can_get_team_name_from_id
@@ -258,17 +258,17 @@ class StatTrackerTest < Minitest::Test
     stat_tracker.parse_games('./data/game.csv')
     stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Rangers", stat_tracker.lowest_scoring_home_team
+    assert_equal "Sabres", stat_tracker.lowest_scoring_home_team
   end
 
 
   def test_it_can_find_lowest_scoring_visitor
     # skip
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game.csv')
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
 
-    assert_equal "Rangers", stat_tracker.lowest_scoring_visitor
+    assert_equal "Sabres", stat_tracker.lowest_scoring_visitor
   end
 
   def test_it_can_find_most_goals_in_a_game
