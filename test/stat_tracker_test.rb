@@ -118,8 +118,8 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_find_highest_scoring_visitor
     stat_tracker = StatTracker.new
-    stat_tracker.parse_games('./data/sample_game.csv')
-    stat_tracker.parse_teams('./data/sample_team_info.csv')
+    stat_tracker.parse_games('./data/game.csv')
+    stat_tracker.parse_teams('./data/team_info.csv')
 
     assert_equal "Bruins", stat_tracker.highest_scoring_visitor
   end
