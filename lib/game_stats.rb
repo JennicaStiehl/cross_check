@@ -128,14 +128,14 @@ module GameStats
     end
     season_with_fewest_games.to_i
   end
-  
+
   def count_of_games_by_season
     count_of_games_by_season = {}
     total_games_by_season = @games.values.group_by do |game|
       game.season
     end
     total_games_by_season.keys.each do |season|
-      count_of_games_by_season.store(season.to_i, total_games_by_season[season].count)
+      count_of_games_by_season.store(season.to_s, total_games_by_season[season].count)
     end
     count_of_games_by_season
   end
@@ -163,7 +163,6 @@ module GameStats
     venues = []
     @games.each do |game|
       venues << game[1].venue
-      # binding.pry
     end
     venues
   end
@@ -174,7 +173,6 @@ module GameStats
     sort_games_by_venue.each do |venue|
       most_popular_venue[venue] += 1
     end
-    # binding.pry
     most_popular_venue
   end
 
@@ -189,10 +187,8 @@ module GameStats
   def least_popular_venue
     unpopular_venue_array = []
     unpopular_venue_array = order_games_by_venue.min_by do |key, value|
-      # binding.pry
       value
     end
-    # binding.pry
     unpopular_venue_array[0]
   end
 
